@@ -1,8 +1,11 @@
 .project
 .settings
 .classpath
+.factorypath
 
-target/
+**/data/
+**/target/
+**/node_modules
 
 **/*.json
 **/*.xlsx

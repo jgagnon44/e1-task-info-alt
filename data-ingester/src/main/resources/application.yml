@@ -1,0 +1,31 @@
+---
+spring:
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create
+  datasource:
+#    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:C:/Users/jgagnon/workspace/java/e1-task-info-alt/data/testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  h2:
+    console:      enabled: true
+
+ingest-sources:
+  task-master-file: F9000 - Task Master.xlsx
+  task-relationship-file: F9001 - Task Relationships.xlsx
+  variant-detail-file: F9006 - Variant Detail.xlsx
+
+excelToJSON:
+  dateFormat: MM/dd/yyyy
+  
+  prettyPrint: true
+  omitEmpty: false
+  fillColumns: false
+  
+  numSheets: 0
+  rowLimit: 0
+  rowOffset: 0
