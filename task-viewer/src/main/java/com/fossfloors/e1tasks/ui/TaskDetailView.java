@@ -73,37 +73,26 @@ public class TaskDetailView extends FormLayout {
     binder = new Binder<>(TaskMaster.class);
     binder.setBean(new TaskMaster());
 
-    // binder.bindInstanceFields(this);
-
     binder.forField(internalTaskID).bind("internalTaskID");
     binder.forField(taskID).bind("taskID");
     binder.forField(name).bind("name");
-    // binder.forField(type).withConverter(new TaskTypeConverter1()).bind("type");
-    binder.forField(type).bind("type");
+    binder.forField(type).withConverter(new TaskTypeConverter()).bind("type");
     binder.forField(objectName).bind("objectName");
     binder.forField(formName).bind("formName");
     binder.forField(version).bind("version");
   }
 
-  // private static class TaskTypeConverter1 implements Converter<String, TaskType> {
-  //
-  // @Override
-  // public Result<TaskType> convertToModel(String value, ValueContext context) {
-  // logger.info("convertToModel: " + value);
-  // return Result.ok(TaskType.fromCodeValue(value));
-  // }
-  //
-  // @Override
-  // public String convertToPresentation(TaskType value, ValueContext context) {
-  // if (value != null) {
-  // logger.info("convertToPresentation: " + value.toString());
-  // return value.getCodeValue();
-  // } else {
-  // logger.info("convertToPresentation: null");
-  // return "";
-  // }
-  // }
-  //
-  // }
+  private static class TaskTypeConverter implements Converter<String, TaskType> {
+    @Override
+    public Result<TaskType> convertToModel(String value, ValueContext context) {
+      TaskType type = TaskType.fromCodeValue(value);
+      return type != null ? Result.ok(type) : Result.error("Unknown task type: " + value);
+    }
+
+    @Override
+    public String convertToPresentation(TaskType value, ValueContext context) {
+      return value != null ? value.name() : "";
+    }
+  }
 
 }

@@ -13,8 +13,7 @@ public class TaskMasterIngester implements ExcelFileIngester<TaskMaster> {
     obj.setInternalTaskID((String) row.get(0));
     obj.setTaskID((String) row.get(1));
     obj.setName((String) row.get(2));
-    // obj.setType((TaskType) row.get(3));
-    obj.setType((String) row.get(3));
+    obj.setType(TaskType.fromCodeValue((String) row.get(3)));
     obj.setObjectName((String) row.get(5));
     obj.setVersion((String) row.get(6));
     obj.setFormName((String) row.get(7));

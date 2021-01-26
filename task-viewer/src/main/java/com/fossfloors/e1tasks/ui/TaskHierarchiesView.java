@@ -24,20 +24,7 @@ public class TaskHierarchiesView extends VerticalLayout {
   private TaskTreeView        taskTreeView;
   private TaskDetailView      taskDetailView;
 
-  // private TaskMasterService taskMasterService;
-  // private TaskRelationshipService taskRelationService;
   private TaskMasterService   taskService;
-
-  // public TaskHierarchiesView(TaskMasterService taskMasterService,
-  // TaskRelationshipService taskRelationService) {
-  // this.taskMasterService = taskMasterService;
-  // this.taskRelationService = taskRelationService;
-  //
-  // setSizeFull();
-  // addClassName("task-hierarchies-view");
-  //
-  // configureView();
-  // }
 
   public TaskHierarchiesView(TaskMasterService taskService) {
     this.taskService = taskService;
@@ -91,7 +78,6 @@ public class TaskHierarchiesView extends VerticalLayout {
     SplitLayout layout = new SplitLayout();
     layout.setSizeFull();
 
-    // topLevelView = new TopLevelTaskView(taskMasterService, taskRelationService);
     topLevelView = new TopLevelTaskView(taskService);
     topLevelView.setWidth("25%");
 
@@ -105,7 +91,6 @@ public class TaskHierarchiesView extends VerticalLayout {
     layout.setOrientation(Orientation.VERTICAL);
     layout.setSizeFull();
 
-    // taskTreeView = new TaskTreeView(taskMasterService, taskRelationService);
     taskTreeView = new TaskTreeView(taskService);
     taskTreeView.setHeight("70%");
 

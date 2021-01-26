@@ -5,19 +5,18 @@ import javax.persistence.Entity;
 @Entity
 public class TaskMaster extends AbstractEntity {
 
-  private String  internalTaskID;
-  private String  taskID;
-  private String  name;
-  // private TaskType type;
-  private String  type;
-  private String  objectName;
-  private String  version;
-  private String  formName;
-  private boolean active;
-  private boolean required;
-  private String  taskViewLink;
-  private String  parentTaskLink;
-  private String  childTaskLink;
+  private String   internalTaskID;
+  private String   taskID;
+  private String   name;
+  private TaskType type;
+  private String   objectName;
+  private String   version;
+  private String   formName;
+  private boolean  active;
+  private boolean  required;
+  private String   taskViewLink;
+  private String   parentTaskLink;
+  private String   childTaskLink;
 
   public String getInternalTaskID() {
     return internalTaskID;
@@ -47,19 +46,11 @@ public class TaskMaster extends AbstractEntity {
     return objectName;
   }
 
-  // public TaskType getType() {
-  // return type;
-  // }
-  //
-  // public void setType(TaskType type) {
-  // this.type = type;
-  // }
-
-  public String getType() {
+  public TaskType getType() {
     return type;
   }
 
-  public void setType(String type) {
+  public void setType(TaskType type) {
     this.type = type;
   }
 

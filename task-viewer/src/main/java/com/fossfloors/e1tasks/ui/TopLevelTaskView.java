@@ -27,20 +27,7 @@ public class TopLevelTaskView extends VerticalLayout {
 
   private Binder<TaskFilter>  binder = new Binder<>(TaskFilter.class);
 
-  // private TaskMasterService taskMasterService;
-  // private TaskRelationshipService taskRelationService;
   private TaskMasterService   taskService;
-
-  // public TopLevelTaskView(TaskMasterService taskMasterService,
-  // TaskRelationshipService taskRelationService) {
-  // this.taskMasterService = taskMasterService;
-  // this.taskRelationService = taskRelationService;
-  //
-  // setSizeFull();
-  // addClassName("top-level-task-grid");
-  //
-  // configureView();
-  // }
 
   public TopLevelTaskView(TaskMasterService taskService) {
     this.taskService = taskService;
@@ -58,17 +45,6 @@ public class TopLevelTaskView extends VerticalLayout {
   }
 
   public void loadTasks() {
-    // List<String> topLevelIDs = taskRelationService.getTopLevelParentTaskIDs();
-    // List<TaskMaster> topLevelTasks = new ArrayList<>();
-    //
-    // topLevelIDs.forEach(taskID -> {
-    // TaskMaster task = taskMasterService.getByInternalTaskID(taskID);
-    //
-    // if (task != null) {
-    // topLevelTasks.add(task);
-    // }
-    // });
-
     grid.setItems(taskService.getTopLevelTasks());
   }
 
@@ -109,6 +85,7 @@ public class TopLevelTaskView extends VerticalLayout {
     }
   }
 
+  // TODO implement filtering
   // public static abstract class TaskFilterEvent extends ComponentEvent<TopLevelTaskView> {
   // private TaskFilter filterSpec;
   //

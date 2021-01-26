@@ -8,7 +8,7 @@ public class TaskTypeConverter implements AttributeConverter<TaskType, String> {
 
   @Override
   public String convertToDatabaseColumn(TaskType type) {
-    return type.getCodeValue();
+    return type != null ? type.getCodeValue() : null;
   }
 
   @Override

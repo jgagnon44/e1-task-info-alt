@@ -7,10 +7,8 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//import com.fossfloors.e1tasks.backend.entity.E1Task;
 import com.fossfloors.e1tasks.backend.entity.TaskMaster;
 import com.fossfloors.e1tasks.backend.service.TaskMasterService;
-//import com.fossfloors.e1tasks.backend.service.E1TaskService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
@@ -27,23 +25,23 @@ public class TaskMasterListView extends VerticalLayout {
   private static final Logger logger = LoggerFactory.getLogger(TaskMasterListView.class);
 
   private TextField           numItems;
-  private Grid<TaskMaster>    grid   = new Grid<>(TaskMaster.class);
+  private Grid<TaskMaster>    grid   = new Grid<>(TaskMaster.class, false);
 
-  private TaskMasterService   tmService;
+  private TaskMasterService   taskService;
 
-  public TaskMasterListView(TaskMasterService tmService) {
-    this.tmService = tmService;
+  public TaskMasterListView(TaskMasterService taskService) {
+    this.taskService = taskService;
     addClassName("task-list-view");
     setSizeFull();
     configureView();
   }
 
-  // @PostConstruct
-  // public void init() {
-  // List<E1Task> items = taskService.findAll();
-  // numItems.setValue(String.valueOf(items.size()));
-  // grid.setItems(items);
-  // }
+  @PostConstruct
+  public void init() {
+    List<TaskMaster> items = taskService.findAll();
+    numItems.setValue(String.valueOf(items.size()));
+    grid.setItems(items);
+  }
 
   private void configureView() {
     configureGrid();

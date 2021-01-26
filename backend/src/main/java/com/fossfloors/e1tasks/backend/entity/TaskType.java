@@ -14,6 +14,10 @@ public enum TaskType {
   }
 
   public static TaskType fromCodeValue(String value) {
+    if (value == null) {
+      return null;
+    }
+
     switch (value) {
       case "00":
         return TASK_VIEW;
