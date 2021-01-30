@@ -1,7 +1,7 @@
 package com.fossfloors.e1tasks.backend.entity;
 
 public enum TaskType {
-  TASK_VIEW("00"), INTERACTIVE("01"), BATCH("02"), FOLDER("07"), URL("08"), USER_DEFINED("11");
+  ALL("*"), TASK_VIEW("00"), INTERACTIVE("01"), BATCH("02"), FOLDER("07"), URL("08"), USER_DEFINED("11");
 
   private String codeValue;
 

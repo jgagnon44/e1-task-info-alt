@@ -43,7 +43,7 @@ public class TaskHierarchiesView extends VerticalLayout {
   private void configureView() {
     add(/* configInfoPane(), */ configGridsLayout());
 
-    topLevelView.addListener(TopLevelTaskView.TaskSelectionEvent.class, taskTreeView::loadTasks);
+    topLevelView.addListener(TopLevelTaskView.TaskSelectionEvent.class, taskTreeView::loadTask);
     taskTreeView.addListener(TaskTreeView.TaskSelectionEvent.class, taskDetailView::loadTask);
   }
 

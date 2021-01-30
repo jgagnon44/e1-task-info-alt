@@ -40,16 +40,12 @@ public class TaskTreeView extends VerticalLayout {
     return getEventBus().addListener(eventType, listener);
   }
 
-  public void loadTasks(TopLevelTaskView.TaskSelectionEvent event) {
+  public void loadTask(TopLevelTaskView.TaskSelectionEvent event) {
     if (event.getSelected() != null) {
-      updateTree(event.getSelected());
+      TaskMaster task = event.getSelected();
+      taskGrid.setItems(task);
+      provider.refreshItem(task, true);
     }
-  }
-
-  private void updateTree(TaskMaster task) {
-    taskGrid.setItems(task);
-    // provider.refreshItem(task);
-    provider.refreshItem(task, true);
   }
 
   private void configureView() {

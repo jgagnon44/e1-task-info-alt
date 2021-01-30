@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fossfloors.e1tasks.backend.beans.TaskFilter;
 import com.fossfloors.e1tasks.backend.entity.TaskMaster;
 import com.fossfloors.e1tasks.backend.entity.TaskRelationship;
 import com.fossfloors.e1tasks.backend.repository.TaskMasterRepository;
@@ -36,6 +37,10 @@ public class TaskMasterService {
     return taskMasterRepo.findAll();
   }
 
+  public List<TaskMaster> filter(TaskFilter filter) {
+    return taskMasterRepo.filter(filter);
+  }
+
   public void saveAll(Set<TaskMaster> taskMasterSet) {
     taskMasterRepo.saveAll(taskMasterSet);
   }
@@ -56,19 +61,15 @@ public class TaskMasterService {
   }
 
   public int getChildCount(TaskMaster parent) {
-    if (parent != null) {
-      return taskRelationService.getChildRelationsForParent(parent.getInternalTaskID()).size();
-    } else {
-      return 0;
-    }
+    return parent != null
+        ? taskRelationService.getChildRelationsForParent(parent.getInternalTaskID()).size()
+        : 0;
   }
 
-  public boolean hasChildren(TaskMaster item) {
-    if (item != null) {
-      return !taskRelationService.getChildRelationsForParent(item.getInternalTaskID()).isEmpty();
-    } else {
-      return false;
-    }
+  public boolean hasChildren(TaskMaster parent) {
+    return parent != null
+        ? !taskRelationService.getChildRelationsForParent(parent.getInternalTaskID()).isEmpty()
+        : false;
   }
 
   public List<TaskMaster> getChildren(TaskMaster parent) {
@@ -79,8 +80,7 @@ public class TaskMasterService {
           .getChildRelationsForParent(parent.getInternalTaskID());
 
       childRelations.forEach(relation -> {
-        TaskMaster task = taskMasterRepo.findByInternalTaskID(relation.getChildTaskID());
-        result.add(task);
+        result.add(taskMasterRepo.findByInternalTaskID(relation.getChildTaskID()));
       });
     }
 

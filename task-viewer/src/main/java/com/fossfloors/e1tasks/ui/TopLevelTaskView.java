@@ -3,9 +3,9 @@ package com.fossfloors.e1tasks.ui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fossfloors.e1tasks.backend.beans.TaskFilter;
 import com.fossfloors.e1tasks.backend.entity.TaskMaster;
 import com.fossfloors.e1tasks.backend.service.TaskMasterService;
-import com.fossfloors.e1tasks.beans.TaskFilter;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.dependency.CssImport;

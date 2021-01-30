@@ -6,7 +6,8 @@ import org.springframework.stereotype.Repository;
 import com.fossfloors.e1tasks.backend.entity.TaskMaster;
 
 @Repository
-public interface TaskMasterRepository extends JpaRepository<TaskMaster, Long> {
+public interface TaskMasterRepository
+    extends JpaRepository<TaskMaster, Long>, TaskMasterRepositoryCustom {
 
   // List<E1Task2> findAll();
 
