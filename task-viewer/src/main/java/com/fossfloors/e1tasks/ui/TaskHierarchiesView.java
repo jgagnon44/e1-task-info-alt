@@ -2,9 +2,6 @@ package com.fossfloors.e1tasks.ui;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fossfloors.e1tasks.backend.service.TaskMasterService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -15,16 +12,15 @@ import com.vaadin.flow.router.Route;
 
 @Route("tree")
 @CssImport("./styles/shared-styles.css")
-@SuppressWarnings("serial")
 public class TaskHierarchiesView extends VerticalLayout {
 
-  private static final Logger logger = LoggerFactory.getLogger(TaskHierarchiesView.class);
+  private static final long serialVersionUID = 1L;
 
-  private TopLevelTaskView    topLevelView;
-  private TaskTreeView        taskTreeView;
-  private TaskDetailView      taskDetailView;
+  private TopLevelTaskView  topLevelView;
+  private TaskTreeView      taskTreeView;
+  private TaskDetailView    taskDetailView;
 
-  private TaskMasterService   taskService;
+  private TaskMasterService taskService;
 
   public TaskHierarchiesView(TaskMasterService taskService) {
     this.taskService = taskService;

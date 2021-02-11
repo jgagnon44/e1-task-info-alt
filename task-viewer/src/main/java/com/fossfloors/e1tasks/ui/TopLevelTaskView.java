@@ -16,16 +16,17 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
 
 @CssImport("./styles/shared-styles.css")
-@SuppressWarnings("serial")
 public class TopLevelTaskView extends VerticalLayout {
 
-  private static final Logger logger = LoggerFactory.getLogger(TopLevelTaskView.class);
+  private static final long   serialVersionUID = 1L;
+
+  private static final Logger logger           = LoggerFactory.getLogger(TopLevelTaskView.class);
 
   private TextField           filterField;
 
   private Grid<TaskMaster>    grid;
 
-  private Binder<TaskFilter>  binder = new Binder<>(TaskFilter.class);
+  private Binder<TaskFilter>  binder           = new Binder<>(TaskFilter.class);
 
   private TaskMasterService   taskService;
 
@@ -64,16 +65,18 @@ public class TopLevelTaskView extends VerticalLayout {
     add(filterField, grid);
 
     // TODO implement filtering
-    binder.setBean(new TaskFilter());
-    binder.forField(filterField).bind("value");
-    binder.addValueChangeListener(event -> {
-      // fireEvent(new FilterChangedEvent(this, binder.getBean()));
-      // grid.setItems(items);
-    });
+    // binder.setBean(new TaskFilter());
+    // binder.forField(filterField).bind("value");
+    // binder.addValueChangeListener(event -> {
+    // fireEvent(new FilterChangedEvent(this, binder.getBean()));
+    // grid.setItems(items);
+    // });
   }
 
   public static class TaskSelectionEvent extends ComponentEvent<TopLevelTaskView> {
-    private TaskMaster selected;
+    private static final long serialVersionUID = 1L;
+
+    private TaskMaster        selected;
 
     public TaskSelectionEvent(TopLevelTaskView source, TaskMaster selected) {
       super(source, false);

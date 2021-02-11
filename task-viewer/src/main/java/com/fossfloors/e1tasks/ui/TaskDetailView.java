@@ -1,8 +1,5 @@
 package com.fossfloors.e1tasks.ui;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fossfloors.e1tasks.backend.entity.TaskMaster;
 import com.fossfloors.e1tasks.backend.entity.TaskType;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -12,20 +9,19 @@ import com.vaadin.flow.data.binder.Result;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.converter.Converter;
 
-@SuppressWarnings("serial")
 public class TaskDetailView extends FormLayout {
 
-  private static final Logger logger = LoggerFactory.getLogger(TaskDetailView.class);
+  private static final long  serialVersionUID = 1L;
 
-  private TextField           internalTaskID;
-  private TextField           taskID;
-  private TextField           name;
-  private TextField           type;
-  private TextField           objectName;
-  private TextField           formName;
-  private TextField           version;
+  private TextField          internalTaskID;
+  private TextField          taskID;
+  private TextField          name;
+  private TextField          type;
+  private TextField          objectName;
+  private TextField          formName;
+  private TextField          version;
 
-  private Binder<TaskMaster>  binder;
+  private Binder<TaskMaster> binder;
 
   public TaskDetailView() {
     configureView();
@@ -83,6 +79,8 @@ public class TaskDetailView extends FormLayout {
   }
 
   private static class TaskTypeConverter implements Converter<String, TaskType> {
+    private static final long serialVersionUID = 1L;
+
     @Override
     public Result<TaskType> convertToModel(String value, ValueContext context) {
       TaskType type = TaskType.fromCodeValue(value);

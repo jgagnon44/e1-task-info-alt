@@ -14,13 +14,13 @@ import com.vaadin.flow.component.treegrid.TreeGrid;
 import com.vaadin.flow.shared.Registration;
 
 @CssImport("./styles/shared-styles.css")
-@SuppressWarnings("serial")
 public class TaskTreeView extends VerticalLayout {
 
-  private static final Logger    logger = LoggerFactory.getLogger(TaskTreeView.class);
+  private static final long      serialVersionUID = 1L;
+
+  private static final Logger    logger           = LoggerFactory.getLogger(TaskTreeView.class);
 
   private TreeGrid<TaskMaster>   taskGrid;
-
   private TaskMasterDataProvider provider;
 
   private TaskMasterService      taskService;
@@ -68,7 +68,9 @@ public class TaskTreeView extends VerticalLayout {
   }
 
   public static class TaskSelectionEvent extends ComponentEvent<TaskTreeView> {
-    private TaskMaster selected;
+    private static final long serialVersionUID = 1L;
+
+    private TaskMaster        selected;
 
     public TaskSelectionEvent(TaskTreeView source, TaskMaster selected) {
       super(source, false);

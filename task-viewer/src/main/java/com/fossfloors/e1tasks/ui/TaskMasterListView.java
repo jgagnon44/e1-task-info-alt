@@ -4,9 +4,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fossfloors.e1tasks.backend.beans.TaskFilter;
 import com.fossfloors.e1tasks.backend.entity.TaskMaster;
 import com.fossfloors.e1tasks.backend.entity.TaskType;
@@ -23,26 +20,25 @@ import com.vaadin.flow.router.Route;
 
 @Route("tasks")
 @CssImport("./styles/shared-styles.css")
-@SuppressWarnings("serial")
 public class TaskMasterListView extends VerticalLayout {
 
-  private static final Logger logger = LoggerFactory.getLogger(TaskMasterListView.class);
+  private static final long  serialVersionUID = 1L;
 
-  private TextField           totalItems;
-  private TextField           filteredItems;
+  private TextField          totalItems;
+  private TextField          filteredItems;
 
-  private TextField           taskID;
-  private TextField           name;
-  private ComboBox<TaskType>  type;
-  private TextField           objectName;
-  private TextField           version;
-  private TextField           formName;
+  private TextField          taskID;
+  private TextField          name;
+  private ComboBox<TaskType> type;
+  private TextField          objectName;
+  private TextField          version;
+  private TextField          formName;
 
-  private Grid<TaskMaster>    grid   = new Grid<>(TaskMaster.class, false);
+  private Grid<TaskMaster>   grid             = new Grid<>(TaskMaster.class, false);
 
-  private TaskMasterService   taskService;
+  private TaskMasterService  taskService;
 
-  private Binder<TaskFilter>  binder;
+  private Binder<TaskFilter> binder;
 
   public TaskMasterListView(TaskMasterService taskService) {
     this.taskService = taskService;
