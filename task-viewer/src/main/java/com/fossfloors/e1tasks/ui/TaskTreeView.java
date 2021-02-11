@@ -11,6 +11,7 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.treegrid.TreeGrid;
+import com.vaadin.flow.data.provider.hierarchy.HierarchicalQuery;
 import com.vaadin.flow.shared.Registration;
 
 @CssImport("./styles/shared-styles.css")
@@ -43,14 +44,15 @@ public class TaskTreeView extends VerticalLayout {
   public void loadTask(TopLevelTaskView.TaskSelectionEvent event) {
     if (event.getSelected() != null) {
       TaskMaster task = event.getSelected();
-      taskGrid.setItems(task);
+      logger.info("loading task: {}", task.getInternalTaskID());
       provider.refreshItem(task, true);
+      taskGrid.setItems(task);
     }
   }
 
   private void configureView() {
     taskGrid = new TreeGrid<>(TaskMaster.class);
-    taskGrid.setColumns("name", "type"/* , "objectName", "formName", "version" */);
+    taskGrid.setColumns("name", "type");
     taskGrid.setHierarchyColumn("name");
     taskGrid.getColumns().forEach(col -> {
       col.setAutoWidth(true);
