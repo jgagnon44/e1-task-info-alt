@@ -1,6 +1,5 @@
 package com.fossfloors.e1tasks.util;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -28,27 +27,22 @@ public class TaskMasterDataProvider
   @Override
   public int getChildCount(HierarchicalQuery<TaskMaster, Void> query) {
     if (query.getParent() != null) {
-      logger.info("parent: {}", query.getParent().getInternalTaskID());
       int count = service.getChildCount(query.getParent());
       logger.info("child count: {}", count);
     } else {
       logger.error("parent is null");
     }
+
     return service.getChildCount(query.getParent());
   }
 
   @Override
   public boolean hasChildren(TaskMaster item) {
-    logger.info("item: {}", item.getInternalTaskID());
-    logger.info("has children: {}", service.hasChildren(item));
     return service.hasChildren(item);
   }
 
   @Override
   protected Stream<TaskMaster> fetchChildrenFromBackEnd(HierarchicalQuery<TaskMaster, Void> query) {
-    logger.info("parent: {}", query.getParent().getInternalTaskID());
-    List<TaskMaster> list = service.getChildren(query.getParent());
-    logger.info("child count: {}", list.size());
     return service.getChildren(query.getParent()).stream();
   }
 
