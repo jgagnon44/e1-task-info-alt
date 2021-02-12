@@ -61,21 +61,21 @@ public class TaskMasterService {
   }
 
   public int getChildCount(TaskMaster parent) {
-    logger.info("TaskMasterService.getChildCount - parent: {}", parent);
+    logger.info("parent: {}", parent);
     return parent != null
         ? taskRelationService.getChildRelationsForParent(parent.getInternalTaskID()).size()
         : 0;
   }
 
   public boolean hasChildren(TaskMaster parent) {
-    logger.info("TaskMasterService.hasChildren - parent: {}", parent);
+    logger.info("parent: {}", parent);
     return parent != null
         ? !taskRelationService.getChildRelationsForParent(parent.getInternalTaskID()).isEmpty()
         : false;
   }
 
   public List<TaskMaster> getChildren(TaskMaster parent) {
-    logger.info("TaskMasterService.getChildren - parent: {}", parent);
+    logger.info("parent: {}", parent);
     List<TaskMaster> result = new ArrayList<>();
 
     if (parent != null) {
