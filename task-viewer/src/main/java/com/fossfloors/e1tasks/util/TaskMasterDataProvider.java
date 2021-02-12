@@ -31,8 +31,6 @@ public class TaskMasterDataProvider
     if (query.getParent() != null) {
       int count = service.getChildCount(query.getParent());
       logger.info("child count: {}", count);
-    } else {
-      logger.error("parent is null");
     }
 
     return service.getChildCount(query.getParent());
