@@ -26,6 +26,8 @@ public class TaskMasterDataProvider
 
   @Override
   public int getChildCount(HierarchicalQuery<TaskMaster, Void> query) {
+    logger.info("TaskMasterDataProvider.getChildCount - parent: {}", query.getParent());
+
     if (query.getParent() != null) {
       int count = service.getChildCount(query.getParent());
       logger.info("child count: {}", count);
@@ -38,11 +40,13 @@ public class TaskMasterDataProvider
 
   @Override
   public boolean hasChildren(TaskMaster item) {
+    logger.info("TaskMasterDataProvider.hasChildren - item: {}", item);
     return service.hasChildren(item);
   }
 
   @Override
   protected Stream<TaskMaster> fetchChildrenFromBackEnd(HierarchicalQuery<TaskMaster, Void> query) {
+    logger.info("TaskMasterDataProvider.fetchChildrenFromBackEnd - parent: {}", query.getParent());
     return service.getChildren(query.getParent()).stream();
   }
 
