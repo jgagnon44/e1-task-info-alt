@@ -46,6 +46,7 @@ public class TopLevelTaskView extends VerticalLayout {
   }
 
   public void loadTasks() {
+    logger.info("top level tasks count: {}", taskService.getTopLevelTasks().size());
     grid.setItems(taskService.getTopLevelTasks());
   }
 
