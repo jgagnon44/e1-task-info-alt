@@ -60,7 +60,8 @@ public class TopLevelTaskView extends VerticalLayout {
     grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
     grid.asSingleSelect().addValueChangeListener(event -> {
-      logger.info("child tasks size: {}", event.getValue().getChildTasks().size());
+      logger.info("task: {}", event.getValue());
+      logger.info("task.childTasks: {}", event.getValue().getChildTasks());
       fireEvent(new TaskSelectionEvent(this, event.getValue()));
     });
 
