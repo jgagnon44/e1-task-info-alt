@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.hibernate.annotations.QueryHints;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -25,13 +26,36 @@ public class TaskMasterRepositoryCustomImpl implements TaskMasterRepositoryCusto
   private EntityManager       entityManager;
 
   @Override
+  // @formatter:off
+  public List<TaskMaster> findAll() {
+    return entityManager
+        .createQuery("select distinct t from TaskMaster t left join fetch t.childTasks", TaskMaster.class)
+        .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+        .getResultList();
+  }
+  // @formatter:on
+
+  @Override
+  // @formatter:off
+  public List<TaskMaster> findAllRootTasks() {
+    return entityManager.createQuery(
+        "select distinct t from TaskMaster t left join fetch t.childTasks where t.parentTask is null", TaskMaster.class)
+        .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+        .getResultList();
+  }
+  // @formatter:on
+
+  @Override
+  // @formatter:off
   public List<TaskMaster> filter(TaskFilter filter) {
     List<TaskMaster> tasks = entityManager
-        .createQuery("select t from TaskMaster t where 1=1 " + buildFilterWhereClause(filter),
-            TaskMaster.class)
+        .createQuery("select distinct t from TaskMaster t left join fetch t.childTasks where 1=1 "
+            + buildFilterWhereClause(filter), TaskMaster.class)
+        .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
         .getResultList();
     return tasks;
   }
+  // @formatter:on
 
   private String buildFilterWhereClause(TaskFilter filter) {
     StringBuilder sb = new StringBuilder();

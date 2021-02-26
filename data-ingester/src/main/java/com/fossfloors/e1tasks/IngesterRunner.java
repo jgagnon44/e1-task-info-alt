@@ -36,6 +36,8 @@ public class IngesterRunner implements CommandLineRunner {
   @Override
   public void run(String... args) throws Exception {
     ingester.ingestFiles();
+    ingester.processRelationships();
+
     tmService.saveAll(ingester.getTaskMasterSet());
     trService.saveAll(ingester.getTaskRelationshipSet());
     // TODO save variant detail items

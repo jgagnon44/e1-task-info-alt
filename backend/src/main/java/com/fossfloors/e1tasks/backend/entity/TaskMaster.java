@@ -1,22 +1,34 @@
 package com.fossfloors.e1tasks.backend.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class TaskMaster extends AbstractEntity {
 
-  private String   internalTaskID;
-  private String   taskID;
-  private String   name;
-  private TaskType type;
-  private String   objectName;
-  private String   version;
-  private String   formName;
-  private boolean  active;
-  private boolean  required;
-  private String   taskViewLink;
-  private String   parentTaskLink;
-  private String   childTaskLink;
+  private String          internalTaskID;
+  private String          taskID;
+  private String          name;
+  private TaskType        type;
+  private String          objectName;
+  private String          version;
+  private String          formName;
+  private boolean         active;
+  private boolean         required;
+  private String          taskViewLink;
+  private String          parentTaskLink;
+  private String          childTaskLink;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  private TaskMaster      parentTask;
+
+  @OneToMany(mappedBy = "parentTask")
+  private Set<TaskMaster> childTasks = new HashSet<>();
 
   public String getInternalTaskID() {
     return internalTaskID;
@@ -112,6 +124,24 @@ public class TaskMaster extends AbstractEntity {
 
   public void setChildTaskLink(String childTaskLink) {
     this.childTaskLink = childTaskLink;
+  }
+
+  public TaskMaster getParentTask() {
+    return parentTask;
+  }
+
+  public void setParentTask(TaskMaster parentTask) {
+    this.parentTask = parentTask;
+  }
+
+  public TaskMaster addChildTask(TaskMaster task) {
+    task.parentTask = this;
+    childTasks.add(task);
+    return task;
+  }
+
+  public Set<TaskMaster> getChildTasks() {
+    return childTasks;
   }
 
   @Override

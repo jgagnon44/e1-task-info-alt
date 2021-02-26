@@ -1,7 +1,9 @@
 package com.fossfloors.e1tasks.backend.util;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
@@ -26,6 +28,8 @@ public class DataIngester {
   private Set<TaskMaster>          taskMasterSet;
   private Set<TaskRelationship>    taskRelationshipSet;
   private Set<VariantDetail>       variantDetailSet;
+
+  private Map<String, TaskMaster>  taskMasterMap;
 
   public DataIngester(String tmFile, String trFile, String vdFile) {
     this.tmFile = tmFile;
@@ -58,9 +62,30 @@ public class DataIngester {
       logger.info("Ingesting VariantDetail data ...");
       variantDetailSet = vdIngester.ingestFile(vdFile);
       logger.info("{} items", variantDetailSet.size());
+
+      // Convert TaskMaster set to map, keyed by internalTaskID.
+      taskMasterMap = taskMasterSet.stream()
+          .collect(Collectors.toMap(TaskMaster::getInternalTaskID, e -> e));
     } catch (InvalidFormatException | IOException e) {
       logger.error("Exception", e);
     }
+  }
+
+  public void processRelationships() {
+    logger.info("Processing task relationships ...");
+
+    taskRelationshipSet.forEach(e -> {
+      TaskMaster parent = taskMasterMap.get(e.getParentTaskID());
+      TaskMaster child = taskMasterMap.get(e.getChildTaskID());
+
+      if (parent != null) {
+        if (child != null) {
+          parent.addChildTask(child);
+        }
+      }
+    });
+
+    logger.info("task map size: {}", taskMasterMap.size());
   }
 
 }
