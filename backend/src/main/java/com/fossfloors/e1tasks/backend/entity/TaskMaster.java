@@ -146,11 +146,12 @@ public class TaskMaster extends AbstractEntity {
 
   @Override
   public String toString() {
+    String parentStr = parentTask != null ? "not null" : "null";
     return "TaskMaster [internalTaskID=" + internalTaskID + ", taskID=" + taskID + ", name=" + name
         + ", type=" + type + ", objectName=" + objectName + ", version=" + version + ", formName="
         + formName + ", active=" + active + ", required=" + required + ", taskViewLink="
         + taskViewLink + ", parentTaskLink=" + parentTaskLink + ", childTaskLink=" + childTaskLink
-        + ", children=" + childTasks.size() + "]";
+        + ", parent=" + parentStr + ", children=" + childTasks.size() + "]";
   }
 
   @Override
