@@ -1,5 +1,7 @@
 package com.fossfloors.e1tasks.ui;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,8 +48,17 @@ public class TopLevelTaskView extends VerticalLayout {
   }
 
   public void loadTasks() {
-    logger.info("top level tasks count: {}", taskService.getTopLevelTasks().size());
-    grid.setItems(taskService.getTopLevelTasks());
+    List<TaskMaster> list = taskService.getTopLevelTasks();
+
+    logger.info("top level tasks count: {}", list.size());
+    grid.setItems(list);
+
+    list.forEach(t -> {
+      if (t.getName().equals("Magnetic Media")) {
+        logger.info("Magnetic Media");
+        logger.info("task: {}", t);
+      }
+    });
   }
 
   private void configureView() {
@@ -61,7 +72,6 @@ public class TopLevelTaskView extends VerticalLayout {
 
     grid.asSingleSelect().addValueChangeListener(event -> {
       logger.info("task: {}", event.getValue());
-      logger.info("task.childTasks: {}", event.getValue().getChildTasks());
       fireEvent(new TaskSelectionEvent(this, event.getValue()));
     });
 

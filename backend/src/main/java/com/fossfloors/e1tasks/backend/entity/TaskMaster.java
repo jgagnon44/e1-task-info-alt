@@ -150,7 +150,7 @@ public class TaskMaster extends AbstractEntity {
         + ", type=" + type + ", objectName=" + objectName + ", version=" + version + ", formName="
         + formName + ", active=" + active + ", required=" + required + ", taskViewLink="
         + taskViewLink + ", parentTaskLink=" + parentTaskLink + ", childTaskLink=" + childTaskLink
-        + "]";
+        + ", children=" + childTasks.size() + "]";
   }
 
   @Override

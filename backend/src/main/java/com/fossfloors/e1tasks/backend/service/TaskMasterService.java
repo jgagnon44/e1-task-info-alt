@@ -53,6 +53,11 @@ public class TaskMasterService {
       TaskMaster task = taskMasterRepo.findByInternalTaskID(id);
 
       if (task != null) {
+        if (task.getName().equals("Magnetic Media")) {
+          logger.info("Magnetic Media");
+          logger.info("task: {}", task);
+        }
+
         result.add(task);
       }
     });
