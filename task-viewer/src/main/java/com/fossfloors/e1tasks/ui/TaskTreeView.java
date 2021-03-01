@@ -82,7 +82,7 @@ public class TaskTreeView extends VerticalLayout {
         .getChildRelationsForParent(parentTaskID);
 
     childRelations.forEach(relation -> {
-      TaskMaster childTask = taskService.getByInternalTaskID(parentTaskID);
+      TaskMaster childTask = taskService.findByInternalTaskID(parentTaskID);
 
       if (childTask != null) {
         if (treeData.contains(childTask)) {
