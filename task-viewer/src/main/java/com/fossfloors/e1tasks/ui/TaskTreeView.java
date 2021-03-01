@@ -30,12 +30,12 @@ public class TaskTreeView extends VerticalLayout {
 
   // private TaskMasterDataProvider provider;
 
-  private TaskMasterService            taskService;
+  // private TaskMasterService taskService;
 
   private Random                       random           = new Random(System.currentTimeMillis());
 
   public TaskTreeView(TaskMasterService taskService) {
-    this.taskService = taskService;
+    // this.taskService = taskService;
 
     setSizeFull();
     addClassName("task-tree-grid");
@@ -61,7 +61,7 @@ public class TaskTreeView extends VerticalLayout {
 
   private void updateTree(TaskMaster task) {
     logger.info("task: {}, child count: {}", task.getInternalTaskID(), task.getChildTasks().size());
-    
+
     treeData.clear();
     treeData.addRootItems(task);
 
