@@ -77,40 +77,40 @@ public class TaskTreeView extends VerticalLayout {
     provider.refreshAll();
   }
 
-  private void processChildTasks(String parentTaskID, TaskMaster parentTask) {
-    logger.info("parentTask: {}", parentTask);
-    
-    List<TaskRelationship> childRelations = relationService
-        .getChildRelationsForParent(parentTaskID);
-    logger.info("child relations: {}", childRelations.size());
-
-    childRelations.forEach(relation -> {
-      TaskMaster childTask = taskService.findByInternalTaskID(parentTaskID);
-      logger.info("childTask: {}", childTask);
-
-      if (childTask != null) {
-        if (treeData.contains(childTask)) {
-          childTask.setSalt(random.nextLong());
-        }
-
-        treeData.addItem(parentTask, childTask);
-
-        processChildTasks(childTask.getInternalTaskID(), childTask);
-      }
-    });
-  }
-
   // private void processChildTasks(String parentTaskID, TaskMaster parentTask) {
-  // parentTask.getChildTasks().forEach(child -> {
-  // if (treeData.contains(child)) {
-  // child.setSalt(random.nextLong());
+  // logger.info("parentTask: {}", parentTask);
+  //
+  // List<TaskRelationship> childRelations = relationService
+  // .getChildRelationsForParent(parentTaskID);
+  // logger.info("child relations: {}", childRelations.size());
+  //
+  // childRelations.forEach(relation -> {
+  // TaskMaster childTask = taskService.findByInternalTaskID(parentTaskID);
+  // logger.info("childTask: {}", childTask);
+  //
+  // if (childTask != null) {
+  // if (treeData.contains(childTask)) {
+  // childTask.setSalt(random.nextLong());
   // }
   //
-  // treeData.addItem(parentTask, child);
+  // treeData.addItem(parentTask, childTask);
   //
-  // processChildTasks(child.getInternalTaskID(), child);
+  // processChildTasks(childTask.getInternalTaskID(), childTask);
+  // }
   // });
   // }
+
+  private void processChildTasks(String parentTaskID, TaskMaster parentTask) {
+    parentTask.getChildTasks().forEach(child -> {
+      if (treeData.contains(child)) {
+        child.setSalt(random.nextLong());
+      }
+
+      treeData.addItem(parentTask, child);
+
+      processChildTasks(child.getInternalTaskID(), child);
+    });
+  }
 
   private void configureView() {
     taskGrid = new TreeGrid<>(TaskMaster.class);
