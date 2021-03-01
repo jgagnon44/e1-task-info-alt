@@ -66,17 +66,24 @@ public class DataIngester {
       // Convert TaskMaster set to map, keyed by internalTaskID.
       taskMasterMap = taskMasterSet.stream()
           .collect(Collectors.toMap(TaskMaster::getInternalTaskID, e -> e));
+
+      logger.info("taskMasterMap: keys={}, values={}", taskMasterMap.keySet().size(),
+          taskMasterMap.values().size());
     } catch (InvalidFormatException | IOException e) {
       logger.error("Exception", e);
     }
   }
 
   public void processRelationships() {
-    logger.info("Processing task relationships ...");
+    logger.info("Processing task relationships ... {} items", taskRelationshipSet.size());
 
     taskRelationshipSet.forEach(e -> {
       TaskMaster parent = taskMasterMap.get(e.getParentTaskID());
       TaskMaster child = taskMasterMap.get(e.getChildTaskID());
+
+      // String parentStr = parent != null ? parent.getName() : "null";
+      // String childStr = child != null ? child.getName() : "null";
+      // System.out.println(parentStr + ", " + childStr);
 
       if (parent != null) {
         if (child != null) {
