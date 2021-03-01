@@ -91,8 +91,6 @@ public class DataIngester {
         }
       }
     });
-
-    logger.info("task map size: {}", taskMasterMap.size());
   }
 
 }
