@@ -54,10 +54,7 @@ public class TopLevelTaskView extends VerticalLayout {
     grid.setItems(list);
 
     list.forEach(t -> {
-      if (t.getName().equals("Magnetic Media")) {
-        logger.info("Magnetic Media");
-        logger.info("task: {}", t);
-      }
+      logger.info("task: {}", t);
     });
   }
 
