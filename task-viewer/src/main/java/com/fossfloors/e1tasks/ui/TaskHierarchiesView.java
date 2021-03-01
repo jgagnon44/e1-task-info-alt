@@ -24,12 +24,12 @@ public class TaskHierarchiesView extends VerticalLayout {
   private TaskDetailView          taskDetailView;
 
   private TaskMasterService       taskService;
-  private TaskRelationshipService taskRelationService;
+  private TaskRelationshipService relationService;
 
   public TaskHierarchiesView(TaskMasterService taskService,
-      TaskRelationshipService taskRelationService) {
+      TaskRelationshipService relationService) {
     this.taskService = taskService;
-    this.taskRelationService = taskRelationService;
+    this.relationService = relationService;
 
     setSizeFull();
     addClassName("task-hierarchies-view");
@@ -54,23 +54,23 @@ public class TaskHierarchiesView extends VerticalLayout {
 
     TextField pt = new TextField("# parent tasks");
     pt.setReadOnly(true);
-    pt.setValue(String.valueOf(taskRelationService.getParentTaskIDs().size()));
+    pt.setValue(String.valueOf(relationService.getParentTaskIDs().size()));
 
     TextField dpt = new TextField("# distinct parent tasks");
     dpt.setReadOnly(true);
-    dpt.setValue(String.valueOf(taskRelationService.getDistinctParentTaskIDs().size()));
+    dpt.setValue(String.valueOf(relationService.getDistinctParentTaskIDs().size()));
 
     TextField ct = new TextField("# child tasks");
     ct.setReadOnly(true);
-    ct.setValue(String.valueOf(taskRelationService.getChildTaskIDs().size()));
+    ct.setValue(String.valueOf(relationService.getChildTaskIDs().size()));
 
     TextField dct = new TextField("# distinct child tasks");
     dct.setReadOnly(true);
-    dct.setValue(String.valueOf(taskRelationService.getDistinctChildTaskIDs().size()));
+    dct.setValue(String.valueOf(relationService.getDistinctChildTaskIDs().size()));
 
     TextField tlt = new TextField("# top-level tasks");
     tlt.setReadOnly(true);
-    tlt.setValue(String.valueOf(taskRelationService.getTopLevelParentTaskIDs().size()));
+    tlt.setValue(String.valueOf(relationService.getTopLevelParentTaskIDs().size()));
 
     layout.add(pt, dpt, ct, dct, tlt);
     return layout;
@@ -93,7 +93,7 @@ public class TaskHierarchiesView extends VerticalLayout {
     layout.setOrientation(Orientation.VERTICAL);
     layout.setSizeFull();
 
-    taskTreeView = new TaskTreeView(taskService);
+    taskTreeView = new TaskTreeView(taskService, relationService);
     taskTreeView.setHeight("70%");
 
     taskDetailView = new TaskDetailView();

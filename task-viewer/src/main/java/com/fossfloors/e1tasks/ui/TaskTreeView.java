@@ -1,12 +1,15 @@
 package com.fossfloors.e1tasks.ui;
 
+import java.util.List;
 import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fossfloors.e1tasks.backend.entity.TaskMaster;
+import com.fossfloors.e1tasks.backend.entity.TaskRelationship;
 import com.fossfloors.e1tasks.backend.service.TaskMasterService;
+import com.fossfloors.e1tasks.backend.service.TaskRelationshipService;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -30,12 +33,14 @@ public class TaskTreeView extends VerticalLayout {
 
   // private TaskMasterDataProvider provider;
 
-  // private TaskMasterService taskService;
+  private TaskMasterService            taskService;
+  private TaskRelationshipService      relationService;
 
   private Random                       random           = new Random(System.currentTimeMillis());
 
-  public TaskTreeView(TaskMasterService taskService) {
-    // this.taskService = taskService;
+  public TaskTreeView(TaskMasterService taskService, TaskRelationshipService relationService) {
+    this.taskService = taskService;
+    this.relationService = relationService;
 
     setSizeFull();
     addClassName("task-tree-grid");
@@ -62,6 +67,8 @@ public class TaskTreeView extends VerticalLayout {
   private void updateTree(TaskMaster task) {
     logger.info("task: {}, child count: {}", task.getInternalTaskID(), task.getChildTasks().size());
 
+    task.getChildTasks().forEach(t -> logger.info("child: {}", t));
+
     treeData.clear();
     treeData.addRootItems(task);
 
@@ -71,16 +78,35 @@ public class TaskTreeView extends VerticalLayout {
   }
 
   private void processChildTasks(String parentTaskID, TaskMaster parentTask) {
-    parentTask.getChildTasks().forEach(child -> {
-      if (treeData.contains(child)) {
-        child.setSalt(random.nextLong());
+    List<TaskRelationship> childRelations = relationService
+        .getChildRelationsForParent(parentTaskID);
+
+    childRelations.forEach(relation -> {
+      TaskMaster childTask = taskService.getByInternalTaskID(parentTaskID);
+
+      if (childTask != null) {
+        if (treeData.contains(childTask)) {
+          childTask.setSalt(random.nextLong());
+        }
+
+        treeData.addItem(parentTask, childTask);
+
+        processChildTasks(childTask.getInternalTaskID(), childTask);
       }
-
-      treeData.addItem(parentTask, child);
-
-      processChildTasks(child.getInternalTaskID(), child);
     });
   }
+
+  // private void processChildTasks(String parentTaskID, TaskMaster parentTask) {
+  // parentTask.getChildTasks().forEach(child -> {
+  // if (treeData.contains(child)) {
+  // child.setSalt(random.nextLong());
+  // }
+  //
+  // treeData.addItem(parentTask, child);
+  //
+  // processChildTasks(child.getInternalTaskID(), child);
+  // });
+  // }
 
   private void configureView() {
     taskGrid = new TreeGrid<>(TaskMaster.class);

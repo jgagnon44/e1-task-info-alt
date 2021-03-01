@@ -33,6 +33,10 @@ public class TaskMasterService {
     this.taskRelationService = taskRelationService;
   }
 
+  public TaskMaster getByInternalTaskID(String id) {
+    return taskMasterRepo.findByInternalTaskID(id);
+  }
+
   public List<TaskMaster> findAll() {
     return taskMasterRepo.findAll();
   }
