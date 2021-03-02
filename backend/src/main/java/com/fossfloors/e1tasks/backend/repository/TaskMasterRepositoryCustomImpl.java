@@ -3,6 +3,7 @@ package com.fossfloors.e1tasks.backend.repository;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import org.hibernate.annotations.QueryHints;
@@ -24,6 +25,26 @@ public class TaskMasterRepositoryCustomImpl implements TaskMasterRepositoryCusto
 
   @PersistenceContext
   private EntityManager       entityManager;
+
+  @Override
+  // @formatter:off
+  public TaskMaster findByInternalTaskID(String id) {
+    TaskMaster result = null;
+
+    try {
+      result = entityManager.createQuery(
+          "select distinct t from TaskMaster t left join fetch t.childTasks where t.internalTaskID = :id",
+              TaskMaster.class)
+          .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+          .setParameter("id", id)
+          .getSingleResult();
+    } catch (NoResultException e) {
+      // Do nothing.
+    }
+
+    return result;
+  }
+  // @formatter:on
 
   @Override
   // @formatter:off

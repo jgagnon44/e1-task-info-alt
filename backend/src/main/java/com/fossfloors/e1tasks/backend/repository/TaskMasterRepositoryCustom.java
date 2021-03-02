@@ -7,6 +7,8 @@ import com.fossfloors.e1tasks.backend.entity.TaskMaster;
 
 public interface TaskMasterRepositoryCustom {
 
+  TaskMaster findByInternalTaskID(String id);
+
   List<TaskMaster> findAll();
 
   List<TaskMaster> findAllRootTasks();
