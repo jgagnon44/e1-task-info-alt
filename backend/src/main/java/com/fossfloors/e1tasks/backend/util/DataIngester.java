@@ -67,8 +67,7 @@ public class DataIngester {
       taskMasterMap = taskMasterSet.stream()
           .collect(Collectors.toMap(TaskMaster::getInternalTaskID, e -> e));
 
-      logger.info("taskMasterMap: keys={}, values={}", taskMasterMap.keySet().size(),
-          taskMasterMap.values().size());
+      logger.info("taskMasterMap: size={}", taskMasterMap.size());
     } catch (InvalidFormatException | IOException e) {
       logger.error("Exception", e);
     }
