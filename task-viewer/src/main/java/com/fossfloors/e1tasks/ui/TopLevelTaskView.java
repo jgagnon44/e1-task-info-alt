@@ -1,6 +1,8 @@
 package com.fossfloors.e1tasks.ui;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,14 +51,29 @@ public class TopLevelTaskView extends VerticalLayout {
 
   public void loadTasks() {
     List<TaskMaster> list = taskService.getTopLevelTasks();
+    // List<TaskMaster> list = taskService.findAllRootTasks();
 
     logger.info("top level tasks count: {}", list.size());
     grid.setItems(list);
 
-    list.forEach(t -> {
-      logger.info("task: {}", t);
+    // XXX get Magnetic Media top level task and print its hierarchy
+    List<TaskMaster> mm = list.stream().filter(t -> t.getName().equals("Magnetic Media"))
+        .collect(Collectors.toList());
+    printTask(mm);
+  }
+
+  // TEMPORARY - debug
+  private void printTask(Collection<TaskMaster> list) {
+    list.forEach(task -> {
+      logger.info("task: {}", task.getName());
+
+      task.getChildTasks().forEach(child -> {
+        logger.info("child: {}", child.getName());
+        printTask(child.getChildTasks());
+      });
     });
   }
+  // TEMPORARY - debug
 
   private void configureView() {
     filterField = new TextField("Filter");
