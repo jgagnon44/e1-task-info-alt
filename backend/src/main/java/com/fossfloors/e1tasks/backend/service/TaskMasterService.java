@@ -57,12 +57,15 @@ public class TaskMasterService {
       TaskMaster task = taskMasterRepo.findByInternalTaskID(id);
 
       if (task != null) {
-        logger.info("task: {}", task);
         result.add(task);
       }
     });
 
     return result;
+  }
+
+  public List<TaskMaster> findAllRootTasks() {
+    return taskMasterRepo.findAllRootTasks();
   }
 
   public int getChildCount(TaskMaster parent) {
