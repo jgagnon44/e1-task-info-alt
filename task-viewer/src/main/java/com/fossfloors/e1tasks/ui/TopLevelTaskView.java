@@ -57,9 +57,9 @@ public class TopLevelTaskView extends VerticalLayout {
     grid.setItems(list);
 
     // XXX get Magnetic Media top level task and print its hierarchy
-    List<TaskMaster> mm = list.stream().filter(t -> t.getName().equals("Magnetic Media"))
-        .collect(Collectors.toList());
-    printTask(mm);
+    // List<TaskMaster> mm = list.stream().filter(t -> t.getName().equals("Magnetic Media"))
+    // .collect(Collectors.toList());
+    // printTask(mm);
   }
 
   // TEMPORARY - debug
