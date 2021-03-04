@@ -27,13 +27,9 @@ public class TaskMasterDataProvider
   @Override
   public int getChildCount(HierarchicalQuery<TaskMaster, Void> query) {
     logger.info("parent: {}", query.getParent());
-
-    if (query.getParent() != null) {
-      int count = service.getChildCount(query.getParent());
-      logger.info("child count: {}", count);
-    }
-
-    return service.getChildCount(query.getParent());
+    int count = service.getChildCount(query.getParent());
+    logger.info("child count: {}", count);
+    return count;
   }
 
   @Override
