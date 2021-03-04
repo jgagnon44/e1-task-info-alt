@@ -50,10 +50,6 @@ public class TaskTreeView extends VerticalLayout {
   }
 
   private void configureView() {
-    // taskGrid = new TreeGrid<>(TaskMaster.class);
-    // taskGrid.setColumns("name", "type");
-    // taskGrid.setHierarchyColumn("name");
-
     taskGrid = new TreeGrid<>();
     taskGrid.addHierarchyColumn(TaskMaster::getName).setHeader("Name");
     taskGrid.addColumn(TaskMaster::getType).setHeader("Type");
