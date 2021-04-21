@@ -64,26 +64,19 @@ public class TaskMasterService {
     return result;
   }
 
-  public List<TaskMaster> findAllRootTasks() {
-    return taskMasterRepo.findAllRootTasks();
-  }
-
   public int getChildCount(TaskMaster parent) {
-    // logger.info("parent: {}", parent);
     return parent != null
         ? taskRelationService.getChildRelationsForParent(parent.getInternalTaskID()).size()
         : 0;
   }
 
   public boolean hasChildren(TaskMaster parent) {
-    // logger.info("parent: {}", parent);
     return parent != null
         ? !taskRelationService.getChildRelationsForParent(parent.getInternalTaskID()).isEmpty()
         : false;
   }
 
   public List<TaskMaster> getChildren(TaskMaster parent) {
-    // logger.info("parent: {}", parent);
     List<TaskMaster> result = new ArrayList<>();
 
     if (parent != null) {
