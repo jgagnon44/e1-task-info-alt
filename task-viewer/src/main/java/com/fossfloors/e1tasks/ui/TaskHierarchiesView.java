@@ -1,7 +1,5 @@
 package com.fossfloors.e1tasks.ui;
 
-import javax.annotation.PostConstruct;
-
 import com.fossfloors.e1tasks.backend.service.TaskMasterService;
 import com.fossfloors.e1tasks.backend.service.TaskRelationshipService;
 import com.vaadin.flow.component.Component;
@@ -19,7 +17,6 @@ public class TaskHierarchiesView extends VerticalLayout {
 
   private static final long       serialVersionUID = 1L;
 
-  private TopLevelTaskView        topLevelView;
   private TaskTreeView            taskTreeView;
   private TaskDetailView          taskDetailView;
 
@@ -37,15 +34,9 @@ public class TaskHierarchiesView extends VerticalLayout {
     configureView();
   }
 
-  @PostConstruct
-  private void init() {
-    topLevelView.loadTasks();
-  }
-
   private void configureView() {
-    add(configInfoPane(), configGridsLayout());
+    add(configInfoPane(), configTreeGridLayout());
 
-    topLevelView.addListener(TopLevelTaskView.TaskSelectionEvent.class, taskTreeView::loadTask);
     taskTreeView.addListener(TaskTreeView.TaskSelectionEvent.class, taskDetailView::loadTask);
   }
 
@@ -76,24 +67,12 @@ public class TaskHierarchiesView extends VerticalLayout {
     return layout;
   }
 
-  private Component configGridsLayout() {
-    SplitLayout layout = new SplitLayout();
-    layout.setSizeFull();
-
-    topLevelView = new TopLevelTaskView(taskService);
-    topLevelView.setWidth("25%");
-
-    layout.addToPrimary(topLevelView);
-    layout.addToSecondary(configTreeGridLayout());
-    return layout;
-  }
-
   private Component configTreeGridLayout() {
     SplitLayout layout = new SplitLayout();
     layout.setOrientation(Orientation.VERTICAL);
     layout.setSizeFull();
 
-    taskTreeView = new TaskTreeView(taskService, relationService);
+    taskTreeView = new TaskTreeView(taskService);
     taskTreeView.setHeight("70%");
 
     taskDetailView = new TaskDetailView();
