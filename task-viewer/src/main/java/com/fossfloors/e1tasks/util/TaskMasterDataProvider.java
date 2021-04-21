@@ -27,13 +27,16 @@ public class TaskMasterDataProvider
   @Override
   public int getChildCount(HierarchicalQuery<TaskMaster, Void> query) {
     logger.info("parent: {}", query.getParent());
+    int count = 0;
 
-    if (query.getParent() != null) {
-      int count = service.getChildCount(query.getParent());
-      logger.info("child count: {}", count);
+    if (query.getParent() == null) {
+      count = service.getTopLevelTasks().size();
+    } else {
+      count = service.getChildCount(query.getParent());
     }
 
-    return service.getChildCount(query.getParent());
+    logger.info("child count: {}", count);
+    return count;
   }
 
   @Override
@@ -45,7 +48,12 @@ public class TaskMasterDataProvider
   @Override
   protected Stream<TaskMaster> fetchChildrenFromBackEnd(HierarchicalQuery<TaskMaster, Void> query) {
     logger.info("parent: {}", query.getParent());
-    return service.getChildren(query.getParent()).stream();
+
+    if (query.getParent() == null) {
+      return service.getTopLevelTasks().stream();
+    } else {
+      return service.getChildren(query.getParent()).stream();
+    }
   }
 
 }
