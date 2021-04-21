@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN" monitorInterval="30">
-  <Properties>
-    <Property name="LOG_PATTERN">
-      %d{yyyy-MM-dd HH:mm:ss.SSS} %p [%t] %C{1.}.%M:%L - %m%n
-    </Property>
-  </Properties>
+<Configuration status="INFO">
   <Appenders>
-    <Console name="Console" target="SYSTEM_OUT" follow="true">
-      <PatternLayout pattern="${LOG_PATTERN}" />
+    <Console name="console" target="SYSTEM_OUT">
+      <PatternLayout
+        pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %l - %msg%n" />
     </Console>
   </Appenders>
+
   <Loggers>
-    <Root level="info">
-      <AppenderRef ref="Console" />
+    <Root level="info" additivity="false">
+      <AppenderRef ref="console" />
     </Root>
   </Loggers>
 </Configuration>
