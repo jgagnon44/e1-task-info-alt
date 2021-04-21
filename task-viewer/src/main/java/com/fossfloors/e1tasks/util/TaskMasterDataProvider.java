@@ -13,12 +13,12 @@ import com.vaadin.flow.data.provider.hierarchy.HierarchicalQuery;
 public class TaskMasterDataProvider
     extends AbstractBackEndHierarchicalDataProvider<TaskMaster, Void> {
 
-  private static final long   serialVersionUID = 1L;
+  private static final long       serialVersionUID = 1L;
 
-  private static final Logger logger           = LoggerFactory
+  private static final Logger     logger           = LoggerFactory
       .getLogger(TaskMasterDataProvider.class);
 
-  private TaskMasterService   service;
+  private final TaskMasterService service;
 
   public TaskMasterDataProvider(TaskMasterService service) {
     this.service = service;
