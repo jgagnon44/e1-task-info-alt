@@ -13,6 +13,7 @@ spring:
     password: password
   h2:
     console:      enabled: true
+      path: /h2-console
 
 ingest-sources:
   task-master-file: F9000 - Task Master.xlsx
