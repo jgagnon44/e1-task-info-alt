@@ -76,17 +76,24 @@ public class DataIngester {
   public void processRelationships() {
     logger.info("Processing task relationships ... {} items", taskRelationshipSet.size());
 
-    taskRelationshipSet.forEach(e -> {
-      TaskMaster parent = taskMasterMap.get(e.getParentTaskID());
-      TaskMaster child = taskMasterMap.get(e.getChildTaskID());
-
-      // String parentStr = parent != null ? parent.getName() : "null";
-      // String childStr = child != null ? child.getName() : "null";
-      // System.out.println(parentStr + ", " + childStr);
+    taskRelationshipSet.forEach(rel -> {
+      TaskMaster parent = taskMasterMap.get(rel.getParentTaskID());
+      TaskMaster child = taskMasterMap.get(rel.getChildTaskID());
 
       if (parent != null) {
         if (child != null) {
           parent.addChildTask(child);
+        } else {
+          logger.warn("parent with null child: pid: {}, cid: {}, parent: {}", rel.getParentTaskID(),
+              rel.getChildTaskID(), parent.getName());
+        }
+      } else {
+        if (child != null) {
+          logger.warn("child with null parent: pid: {}, cid: {}, child: {}", rel.getParentTaskID(),
+              rel.getChildTaskID(), child.getName());
+        } else {
+          logger.warn("both parent and child are null: pid: {}, cid: {}", rel.getParentTaskID(),
+              rel.getChildTaskID());
         }
       }
     });
