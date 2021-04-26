@@ -19,6 +19,7 @@
     <module>backend</module>
     <module>data-ingester</module>
     <module>task-viewer</module>
+    <module>dump-tree</module>
   </modules>
 
   <properties>
