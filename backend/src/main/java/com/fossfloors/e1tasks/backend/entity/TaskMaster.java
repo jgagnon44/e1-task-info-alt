@@ -154,6 +154,12 @@ public class TaskMaster extends AbstractEntity {
         + ", parent=" + parentStr + ", children=" + childTasks.size() + "]";
   }
 
+  public String dumpNode() {
+    String parentStr = parentTask != null ? "not null" : "null";
+    return "TaskMaster [internalTaskID=" + internalTaskID + ", name=" + name + ", type=" + type
+        + ", parent=" + parentStr + ", children=" + childTasks.size() + "]";
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;
