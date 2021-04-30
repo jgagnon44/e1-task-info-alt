@@ -2,10 +2,10 @@ package com.fossfloors.e1tasks.backend.entity;
 
 public class Task extends TaskMaster {
 
-  private String variant;
+  protected String variant;
 
   public Task() {
-    this.variant = "DEFAULT";
+    this.variant = "*DEFAULT";
   }
 
   public Task(String variant) {
