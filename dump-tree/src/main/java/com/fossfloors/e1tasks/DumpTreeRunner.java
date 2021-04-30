@@ -29,7 +29,7 @@ public class DumpTreeRunner implements CommandLineRunner {
     level++;
     logger.info(buildSpacer() + node.dumpNode());
 
-    node.getChildTasks().forEach(c -> {
+    node.getToReferences().forEach(c -> {
       TaskMaster child = tmService.findByInternalTaskID(c.getInternalTaskID());
       processNode(child);
     });

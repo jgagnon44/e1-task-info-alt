@@ -82,7 +82,7 @@ public class DataIngester {
 
       if (parent != null) {
         if (child != null) {
-          parent.addReferenceTo(child);
+          parent.addToReference(child);
         } else {
           logger.warn("parent with null child: pid: {}, cid: {}, parent: {}", rel.getParentTaskID(),
               rel.getChildTaskID(), parent.getName());

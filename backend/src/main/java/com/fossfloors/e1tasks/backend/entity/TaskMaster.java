@@ -23,10 +23,10 @@ public class TaskMaster extends AbstractEntity {
   private String          childTaskLink;
 
   @ManyToMany
-  private Set<TaskMaster> referencesTo   = new HashSet<>();
+  private Set<TaskMaster> toReferences   = new HashSet<>();
 
-  @ManyToMany(mappedBy = "referencesTo")
-  private Set<TaskMaster> referencesFrom = new HashSet<>();
+  @ManyToMany(mappedBy = "toReferences")
+  private Set<TaskMaster> fromReferences = new HashSet<>();
 
   public String getInternalTaskID() {
     return internalTaskID;
@@ -124,17 +124,17 @@ public class TaskMaster extends AbstractEntity {
     this.childTaskLink = childTaskLink;
   }
 
-  public Set<TaskMaster> getReferencesTo() {
-    return referencesTo;
+  public Set<TaskMaster> getToReferences() {
+    return toReferences;
   }
 
-  public Set<TaskMaster> getReferencesFrom() {
-    return referencesFrom;
+  public Set<TaskMaster> getFromReferences() {
+    return fromReferences;
   }
 
-  public TaskMaster addReferenceTo(TaskMaster task) {
-    task.referencesFrom.add(this);
-    this.referencesTo.add(task);
+  public TaskMaster addToReference(TaskMaster task) {
+    task.fromReferences.add(this);
+    this.toReferences.add(task);
     return task;
   }
 
@@ -144,13 +144,13 @@ public class TaskMaster extends AbstractEntity {
         + ", type=" + type + ", objectName=" + objectName + ", version=" + version + ", formName="
         + formName + ", active=" + active + ", required=" + required + ", taskViewLink="
         + taskViewLink + ", parentTaskLink=" + parentTaskLink + ", childTaskLink=" + childTaskLink
-        + ", referencesTo=" + referencesTo.size() + ", referencesFrom=" + referencesFrom.size()
+        + ", toReferences=" + toReferences.size() + ", fromReferences=" + fromReferences.size()
         + "]";
   }
 
   public String dumpNode() {
     return "TaskMaster [internalTaskID=" + internalTaskID + ", name=" + name + ", type=" + type
-        + ", referencesTo=" + referencesTo.size() + ", referencesFrom=" + referencesFrom.size()
+        + ", toReferences=" + toReferences.size() + ", fromReferences=" + fromReferences.size()
         + "]";
   }
 
