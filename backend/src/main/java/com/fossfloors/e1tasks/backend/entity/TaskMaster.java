@@ -9,24 +9,24 @@ import javax.persistence.ManyToMany;
 @Entity
 public class TaskMaster extends AbstractEntity {
 
-  private String          internalTaskID;
-  private String          taskID;
-  private String          name;
-  private TaskType        type;
-  private String          objectName;
-  private String          version;
-  private String          formName;
-  private boolean         active;
-  private boolean         required;
-  private String          taskViewLink;
-  private String          parentTaskLink;
-  private String          childTaskLink;
+  protected String          internalTaskID;
+  protected String          taskID;
+  protected String          name;
+  protected TaskType        type;
+  protected String          objectName;
+  protected String          version;
+  protected String          formName;
+  protected boolean         active;
+  protected boolean         required;
+  protected String          taskViewLink;
+  protected String          parentTaskLink;
+  protected String          childTaskLink;
 
   @ManyToMany
-  private Set<TaskMaster> toReferences   = new HashSet<>();
+  protected Set<TaskMaster> toReferences   = new HashSet<>();
 
   @ManyToMany(mappedBy = "toReferences")
-  private Set<TaskMaster> fromReferences = new HashSet<>();
+  protected Set<TaskMaster> fromReferences = new HashSet<>();
 
   public String getInternalTaskID() {
     return internalTaskID;
