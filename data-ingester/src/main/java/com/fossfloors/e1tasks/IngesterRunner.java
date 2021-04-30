@@ -39,7 +39,7 @@ public class IngesterRunner implements CommandLineRunner {
   @Override
   public void run(String... args) throws Exception {
     ingester.ingestFiles();
-    ingester.processRelationships();
+    ingester.processTaskRelationships();
 
     tmService.saveAll(ingester.getTaskMasterSet());
     trService.saveAll(ingester.getTaskRelationshipSet());

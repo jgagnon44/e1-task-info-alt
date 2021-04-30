@@ -73,7 +73,7 @@ public class DataIngester {
     }
   }
 
-  public void processRelationships() {
+  public void processTaskRelationships() {
     logger.info("Processing task relationships ... {} items", taskRelationshipSet.size());
 
     taskRelationshipSet.forEach(rel -> {
