@@ -2,7 +2,7 @@ package com.fossfloors.e1tasks.backend.entity;
 
 import javax.persistence.Entity;
 
-//@Entity
+@Entity
 public class VariantDetail extends AbstractEntity {
 
   private String  variantName;

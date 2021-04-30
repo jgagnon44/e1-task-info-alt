@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.fossfloors.e1tasks.backend.service.TaskMasterService;
 import com.fossfloors.e1tasks.backend.service.TaskRelationshipService;
+import com.fossfloors.e1tasks.backend.service.VariantDetailService;
 import com.fossfloors.e1tasks.backend.util.DataIngester;
 
 @Component
@@ -27,6 +28,8 @@ public class IngesterRunner implements CommandLineRunner {
   private TaskMasterService       tmService;
   @Autowired
   private TaskRelationshipService trService;
+  @Autowired
+  private VariantDetailService    vdService;
 
   @PostConstruct
   private void init() {
@@ -40,7 +43,7 @@ public class IngesterRunner implements CommandLineRunner {
 
     tmService.saveAll(ingester.getTaskMasterSet());
     trService.saveAll(ingester.getTaskRelationshipSet());
-    // TODO save variant detail items
+    vdService.saveAll(ingester.getVariantDetailSet());
   }
 
 }
