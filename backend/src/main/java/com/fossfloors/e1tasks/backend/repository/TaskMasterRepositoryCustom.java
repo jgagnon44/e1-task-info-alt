@@ -11,8 +11,6 @@ public interface TaskMasterRepositoryCustom {
 
   List<TaskMaster> findAll();
 
-  List<TaskMaster> findAllRootTasks();
-
   List<TaskMaster> filter(TaskFilter filter);
 
 }

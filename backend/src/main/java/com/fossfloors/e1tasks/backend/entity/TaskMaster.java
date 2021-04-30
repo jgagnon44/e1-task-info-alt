@@ -4,9 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class TaskMaster extends AbstractEntity {
@@ -24,11 +22,11 @@ public class TaskMaster extends AbstractEntity {
   private String          parentTaskLink;
   private String          childTaskLink;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  private TaskMaster      parentTask;
+  @ManyToMany
+  private Set<TaskMaster> referencesTo   = new HashSet<>();
 
-  @OneToMany(mappedBy = "parentTask")
-  private Set<TaskMaster> childTasks = new HashSet<>();
+  @ManyToMany(mappedBy = "referencesTo")
+  private Set<TaskMaster> referencesFrom = new HashSet<>();
 
   public String getInternalTaskID() {
     return internalTaskID;
@@ -126,38 +124,34 @@ public class TaskMaster extends AbstractEntity {
     this.childTaskLink = childTaskLink;
   }
 
-  public TaskMaster getParentTask() {
-    return parentTask;
+  public Set<TaskMaster> getReferencesTo() {
+    return referencesTo;
   }
 
-  public void setParentTask(TaskMaster parentTask) {
-    this.parentTask = parentTask;
+  public Set<TaskMaster> getReferencesFrom() {
+    return referencesFrom;
   }
 
-  public TaskMaster addChildTask(TaskMaster task) {
-    task.parentTask = this;
-    childTasks.add(task);
+  public TaskMaster addReferenceTo(TaskMaster task) {
+    task.referencesFrom.add(this);
+    this.referencesTo.add(task);
     return task;
-  }
-
-  public Set<TaskMaster> getChildTasks() {
-    return childTasks;
   }
 
   @Override
   public String toString() {
-    String parentStr = parentTask != null ? "not null" : "null";
     return "TaskMaster [internalTaskID=" + internalTaskID + ", taskID=" + taskID + ", name=" + name
         + ", type=" + type + ", objectName=" + objectName + ", version=" + version + ", formName="
         + formName + ", active=" + active + ", required=" + required + ", taskViewLink="
         + taskViewLink + ", parentTaskLink=" + parentTaskLink + ", childTaskLink=" + childTaskLink
-        + ", parent=" + parentStr + ", children=" + childTasks.size() + "]";
+        + ", referencesTo=" + referencesTo.size() + ", referencesFrom=" + referencesFrom.size()
+        + "]";
   }
 
   public String dumpNode() {
-    String parentStr = parentTask != null ? "not null" : "null";
     return "TaskMaster [internalTaskID=" + internalTaskID + ", name=" + name + ", type=" + type
-        + ", parent=" + parentStr + ", children=" + childTasks.size() + "]";
+        + ", referencesTo=" + referencesTo.size() + ", referencesFrom=" + referencesFrom.size()
+        + "]";
   }
 
   @Override

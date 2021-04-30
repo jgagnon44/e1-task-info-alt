@@ -15,6 +15,4 @@ public interface TaskMasterRepository
 
   List<TaskMaster> findAll();
 
-  List<TaskMaster> findAllRootTasks();
-
 }

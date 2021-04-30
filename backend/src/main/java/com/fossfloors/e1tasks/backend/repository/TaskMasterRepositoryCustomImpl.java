@@ -33,8 +33,10 @@ public class TaskMasterRepositoryCustomImpl implements TaskMasterRepositoryCusto
 
     try {
       result = entityManager.createQuery(
-          "select distinct t from TaskMaster t left join fetch t.childTasks where t.internalTaskID = :id",
-              TaskMaster.class)
+          "select distinct t from TaskMaster t " +
+          "left join fetch t.referencesTo " +
+          "left join fetch t.referencesFrom " +
+          "where t.internalTaskID = :id", TaskMaster.class)
           .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
           .setParameter("id", id)
           .getSingleResult();
@@ -50,17 +52,9 @@ public class TaskMasterRepositoryCustomImpl implements TaskMasterRepositoryCusto
   // @formatter:off
   public List<TaskMaster> findAll() {
     return entityManager
-        .createQuery("select distinct t from TaskMaster t left join fetch t.childTasks", TaskMaster.class)
-        .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
-        .getResultList();
-  }
-  // @formatter:on
-
-  @Override
-  // @formatter:off
-  public List<TaskMaster> findAllRootTasks() {
-    return entityManager.createQuery(
-        "select distinct t from TaskMaster t left join fetch t.childTasks where t.parentTask is null", TaskMaster.class)
+        .createQuery("select distinct t from TaskMaster t " +
+            "left join fetch t.referencesTo " +
+            "left join fetch t.referencesFrom", TaskMaster.class)
         .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
         .getResultList();
   }
@@ -70,8 +64,10 @@ public class TaskMasterRepositoryCustomImpl implements TaskMasterRepositoryCusto
   // @formatter:off
   public List<TaskMaster> filter(TaskFilter filter) {
     List<TaskMaster> tasks = entityManager
-        .createQuery("select distinct t from TaskMaster t left join fetch t.childTasks where 1=1 "
-            + buildFilterWhereClause(filter), TaskMaster.class)
+        .createQuery("select distinct t from TaskMaster t " +
+            "left join fetch t.referencesTo " +
+            "left join fetch t.referencesFrom " +
+            "where 1=1 " + buildFilterWhereClause(filter), TaskMaster.class)
         .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
         .getResultList();
     return tasks;
