@@ -32,6 +32,10 @@ public class TaskRelationshipService {
   public TaskRelationshipService(TaskRelationshipRepository repo) {
     this.repo = repo;
   }
+  
+  public List<TaskRelationship> findAll() {
+    return repo.findAll();
+  }
 
   public void saveAll(Set<TaskRelationship> taskRelationshipSet) {
     repo.saveAll(taskRelationshipSet);
