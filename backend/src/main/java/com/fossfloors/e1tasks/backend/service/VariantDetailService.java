@@ -32,6 +32,10 @@ public class VariantDetailService {
     this.repo = repo;
   }
 
+  public List<VariantDetail> findAll() {
+    return repo.findAll();
+  }
+
   public void saveAll(Set<VariantDetail> variantDetailSet) {
     repo.saveAll(variantDetailSet);
   }
