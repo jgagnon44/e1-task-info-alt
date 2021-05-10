@@ -41,6 +41,14 @@ public class VariantDetailService {
   }
 
   // @formatter:off
+  public List<String> findVariantNames() {
+    return entityManager
+        .createQuery("select distinct t.variantName from VariantDetail t", String.class)
+        .getResultList();
+  }
+  // @formatter:on
+
+  // @formatter:off
   public List<VariantDetail> getRelationsForVariant(String variant) {
     return entityManager
         .createQuery("select t from VariantDetail t where t.variantName = :variant", VariantDetail.class)
