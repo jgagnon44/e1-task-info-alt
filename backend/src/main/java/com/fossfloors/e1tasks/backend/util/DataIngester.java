@@ -1,9 +1,7 @@
 package com.fossfloors.e1tasks.backend.util;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
@@ -28,8 +26,6 @@ public class DataIngester {
   private Set<TaskMaster>          taskMasterSet;
   private Set<TaskRelationship>    taskRelationshipSet;
   private Set<VariantDetail>       variantDetailSet;
-
-  private Map<String, TaskMaster>  taskMasterMap;
 
   public DataIngester(String tmFile, String trFile, String vdFile) {
     this.tmFile = tmFile;
@@ -62,41 +58,9 @@ public class DataIngester {
       logger.info("Ingesting VariantDetail data ...");
       variantDetailSet = vdIngester.ingestFile(vdFile);
       logger.info("{} items", variantDetailSet.size());
-
-      // Convert TaskMaster set to map, keyed by internalTaskID.
-      taskMasterMap = taskMasterSet.stream()
-          .collect(Collectors.toMap(TaskMaster::getInternalTaskID, e -> e));
-
-      logger.info("taskMasterMap: size={}", taskMasterMap.size());
     } catch (InvalidFormatException | IOException e) {
       logger.error("Exception", e);
     }
-  }
-
-  public void processTaskRelationships() {
-    logger.info("Processing task relationships ... {} items", taskRelationshipSet.size());
-
-    taskRelationshipSet.forEach(rel -> {
-      TaskMaster parent = taskMasterMap.get(rel.getParentTaskID());
-      TaskMaster child = taskMasterMap.get(rel.getChildTaskID());
-
-      if (parent != null) {
-        if (child != null) {
-          parent.addToReference(child);
-        } else {
-          logger.warn("parent with null child: pid: {}, cid: {}, parent: {}", rel.getParentTaskID(),
-              rel.getChildTaskID(), parent.getName());
-        }
-      } else {
-        if (child != null) {
-          logger.warn("child with null parent: pid: {}, cid: {}, child: {}", rel.getParentTaskID(),
-              rel.getChildTaskID(), child.getName());
-        } else {
-          logger.warn("both parent and child are null: pid: {}, cid: {}", rel.getParentTaskID(),
-              rel.getChildTaskID());
-        }
-      }
-    });
   }
 
 }
