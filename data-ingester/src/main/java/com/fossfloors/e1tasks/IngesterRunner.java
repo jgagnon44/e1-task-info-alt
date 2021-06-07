@@ -2,6 +2,8 @@ package com.fossfloors.e1tasks;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -14,6 +16,8 @@ import com.fossfloors.e1tasks.backend.util.DataIngester;
 
 @Component
 public class IngesterRunner implements CommandLineRunner {
+
+  private static final Logger     logger = LoggerFactory.getLogger(IngesterRunner.class);
 
   @Value("${ingest-sources.task-master-file}")
   private String                  tmFile;
@@ -38,9 +42,10 @@ public class IngesterRunner implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
+    // Read and parse data from data files.
     ingester.ingestFiles();
-    ingester.processTaskRelationships();
 
+    // Save data to database.
     tmService.saveAll(ingester.getTaskMasterSet());
     trService.saveAll(ingester.getTaskRelationshipSet());
     vdService.saveAll(ingester.getVariantDetailSet());
