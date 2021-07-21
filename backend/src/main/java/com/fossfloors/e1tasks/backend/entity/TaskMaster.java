@@ -1,32 +1,48 @@
 package com.fossfloors.e1tasks.backend.entity;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 
 @Entity
 public class TaskMaster extends AbstractEntity {
 
-  protected String          internalTaskID;
-  protected String          taskID;
-  protected String          name;
-  protected TaskType        type;
-  protected String          objectName;
-  protected String          version;
-  protected String          formName;
-  protected boolean         active;
-  protected boolean         required;
-  protected String          taskViewLink;
-  protected String          parentTaskLink;
-  protected String          childTaskLink;
+  protected String   internalTaskID;
+  protected String   taskID;
+  protected String   name;
+  protected TaskType type;
+  protected String   objectName;
+  protected String   version;
+  protected String   formName;
+  protected boolean  active;
+  protected boolean  required;
+  protected String   taskViewLink;
+  protected String   parentTaskLink;
+  protected String   childTaskLink;
 
-  @ManyToMany
-  protected Set<TaskMaster> toReferences   = new HashSet<>();
+  /**
+   * Default constructor.
+   */
+  public TaskMaster() {
+  }
 
-  @ManyToMany(mappedBy = "toReferences")
-  protected Set<TaskMaster> fromReferences = new HashSet<>();
+  /**
+   * Copy constructor.
+   * 
+   * @param other - object to copy from.
+   */
+  public TaskMaster(TaskMaster other) {
+    this.internalTaskID = other.internalTaskID;
+    this.taskID = other.taskID;
+    this.name = other.name;
+    this.type = other.type;
+    this.objectName = other.objectName;
+    this.version = other.version;
+    this.formName = other.formName;
+    this.active = other.active;
+    this.required = other.required;
+    this.taskViewLink = other.taskViewLink;
+    this.parentTaskLink = other.parentTaskLink;
+    this.childTaskLink = other.childTaskLink;
+  }
 
   public String getInternalTaskID() {
     return internalTaskID;
@@ -124,33 +140,17 @@ public class TaskMaster extends AbstractEntity {
     this.childTaskLink = childTaskLink;
   }
 
-  public Set<TaskMaster> getToReferences() {
-    return toReferences;
-  }
-
-  public Set<TaskMaster> getFromReferences() {
-    return fromReferences;
-  }
-
-  public TaskMaster addToReference(TaskMaster task) {
-    task.fromReferences.add(this);
-    this.toReferences.add(task);
-    return task;
-  }
-
   @Override
   public String toString() {
     return "TaskMaster [internalTaskID=" + internalTaskID + ", taskID=" + taskID + ", name=" + name
         + ", type=" + type + ", objectName=" + objectName + ", version=" + version + ", formName="
         + formName + ", active=" + active + ", required=" + required + ", taskViewLink="
         + taskViewLink + ", parentTaskLink=" + parentTaskLink + ", childTaskLink=" + childTaskLink
-        + ", toReferences=" + toReferences.size() + ", fromReferences=" + fromReferences.size()
         + "]";
   }
 
   public String dumpNode() {
     return "TaskMaster [internalTaskID=" + internalTaskID + ", name=" + name + ", type=" + type
-        + ", toReferences=" + toReferences.size() + ", fromReferences=" + fromReferences.size()
         + "]";
   }
 
