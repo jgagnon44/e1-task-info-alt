@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ public class TaskMenuPrintUtil {
 
   private static int          level  = 0;
 
-  public static void printMasterMenuMap(Map<String, Task> map) {
+  public static void printMasterMenus(Map<String, Task> map) {
     logger.info("{} entries", map.size());
 
     map.forEach((viewID, task) -> {
@@ -51,6 +52,40 @@ public class TaskMenuPrintUtil {
     });
   }
 
+  public static void printMasterMenuMap(Map<String, Set<Task>> map) {
+    logger.info("{} entries", map.size());
+
+    map.forEach((viewID, taskSet) -> {
+      Path path = Path.of("master-menu-map_" + viewID + ".txt");
+      BufferedWriter writer = null;
+
+      try {
+        writer = Files.newBufferedWriter(path, StandardOpenOption.CREATE);
+      } catch (IOException e) {
+        logger.error("Exception", e);
+      }
+
+      logger.info("viewID: {}", viewID);
+
+      try {
+        writer.write("viewID: " + viewID + "\n");
+      } catch (IOException e) {
+        logger.error("Exception", e);
+      }
+
+      for (Task task : taskSet) {
+        level = 0;
+        printTask(task, writer);
+      }
+
+      try {
+        writer.close();
+      } catch (IOException e) {
+        logger.error("Exception", e);
+      }
+    });
+  }
+
   public static void printMasterMenu(String viewID, Task task) {
     Path path = Path.of("master-menu_" + viewID + ".txt");
     BufferedWriter writer = null;
@@ -63,6 +98,28 @@ public class TaskMenuPrintUtil {
 
     level = 0;
     printTask(task, writer);
+
+    try {
+      writer.close();
+    } catch (IOException e) {
+      logger.error("Exception", e);
+    }
+  }
+
+  public static void printMasterMenu(String viewID, Set<Task> taskSet) {
+    Path path = Path.of("master-menu_" + viewID + ".txt");
+    BufferedWriter writer = null;
+
+    try {
+      writer = Files.newBufferedWriter(path, StandardOpenOption.CREATE);
+    } catch (IOException e) {
+      logger.error("Exception", e);
+    }
+
+    for (Task task : taskSet) {
+      level = 0;
+      printTask(task, writer);
+    }
 
     try {
       writer.close();
@@ -104,6 +161,41 @@ public class TaskMenuPrintUtil {
     });
   }
 
+  public static void printVariantsMenuMap(Map<VariantID, Set<Task>> map) {
+    logger.info("{} entries", map.size());
+
+    map.forEach((varID, taskSet) -> {
+      Path path = Path
+          .of("variant-menu-map_" + varID.getVariantName() + "-" + varID.getTaskView() + ".txt");
+      BufferedWriter writer = null;
+
+      try {
+        writer = Files.newBufferedWriter(path, StandardOpenOption.CREATE);
+      } catch (IOException e) {
+        logger.error("Exception", e);
+      }
+
+      logger.info("variantID: {}", varID);
+
+      try {
+        writer.write("variantID: " + varID + "\n");
+      } catch (IOException e) {
+        logger.error("Exception", e);
+      }
+
+      for (Task task : taskSet) {
+        level = 0;
+        printTask(task, writer);
+      }
+
+      try {
+        writer.close();
+      } catch (IOException e) {
+        logger.error("Exception", e);
+      }
+    });
+  }
+
   public static void printVariantMenu(VariantID varID, Task task) {
     Path path = Path
         .of("variant-menu_" + varID.getVariantName() + "-" + varID.getTaskView() + ".txt");
@@ -123,6 +215,34 @@ public class TaskMenuPrintUtil {
 
     level = 0;
     printTask(task, writer);
+
+    try {
+      writer.close();
+    } catch (IOException e) {
+      logger.error("Exception", e);
+    }
+  }
+
+  public static void printVariantMenu(String variantName, String viewID, Set<Task> taskSet) {
+    Path path = Path.of("variant-menu_" + variantName + "-" + viewID + ".txt");
+    BufferedWriter writer = null;
+
+    try {
+      writer = Files.newBufferedWriter(path, StandardOpenOption.CREATE);
+    } catch (IOException e) {
+      logger.error("Exception", e);
+    }
+
+    try {
+      writer.write("variantName: " + variantName + ", viewID: " + viewID + "\n");
+    } catch (IOException e) {
+      logger.error("Exception", e);
+    }
+
+    for (Task task : taskSet) {
+      level = 0;
+      printTask(task, writer);
+    }
 
     try {
       writer.close();
