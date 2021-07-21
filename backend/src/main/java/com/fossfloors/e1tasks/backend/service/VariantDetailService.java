@@ -2,6 +2,7 @@ package com.fossfloors.e1tasks.backend.service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -32,8 +33,8 @@ public class VariantDetailService {
     this.repo = repo;
   }
 
-  public List<VariantDetail> findAll() {
-    return repo.findAll();
+  public Set<VariantDetail> findAll() {
+    return Set.copyOf(repo.findAll());
   }
 
   public void saveAll(Set<VariantDetail> variantDetailSet) {
@@ -41,7 +42,7 @@ public class VariantDetailService {
   }
 
   // @formatter:off
-  public List<String> findVariantNames() {
+  public List<String> getDistinctVariantNames() {
     return entityManager
         .createQuery("select distinct t.variantName from VariantDetail t", String.class)
         .getResultList();
@@ -49,19 +50,64 @@ public class VariantDetailService {
   // @formatter:on
 
   // @formatter:off
-  public List<VariantDetail> getRelationsForVariant(String variant) {
+  public List<String> getTopLevelParentTaskIDs(String variantName) {
+    List<String> distinctParentIDs = getDistinctParentTaskIDs(variantName);
+    List<String> distinctChildIDs = getDistinctChildTaskIDs(variantName);
+    return distinctParentIDs.stream()
+        .filter(id -> !distinctChildIDs.contains(id))
+        .collect(Collectors.toList());
+  }
+  // @formatter:on
+
+  // @formatter:off
+  public List<VariantDetail> getChildRelationsForVariantAndParent(String variantName, String parentID) {
     return entityManager
-        .createQuery("select t from VariantDetail t where t.variantName = :variant", VariantDetail.class)
-        .setParameter("variant", variant)
+        .createQuery("select t from VariantDetail t where t.variantName = :variant" +
+            " and t.parentTaskID = :parentID", VariantDetail.class)
+        .setParameter("variant", variantName)
+        .setParameter("parentID", parentID)
         .getResultList();
   }
   // @formatter:on
 
   // @formatter:off
-  public List<VariantDetail> getChildRelationsForParent(String parentID) {
+  private List<String> getDistinctParentTaskIDs(String variantName) {
     return entityManager
-        .createQuery("select t from VariantDetail t where t.parentTaskID = :parentID", VariantDetail.class)
-        .setParameter("parentID", parentID)
+        .createQuery("select distinct t.parentTaskID from VariantDetail t" +
+            " where t.variantName = :variant", String.class)
+        .setParameter("variant", variantName)
+        .getResultList();
+  }
+  // @formatter:on
+
+  // @formatter:off
+  private List<String> getDistinctChildTaskIDs(String variantName) {
+    return entityManager
+        .createQuery("select distinct t.childTaskID from VariantDetail t" +
+            " where t.variantName = :variant", String.class)
+        .setParameter("variant", variantName)
+        .getResultList();
+  }
+  // @formatter:on
+
+  // @formatter:off
+  public List<String> getDistinctTaskViewIDsForVariant(String variantName) {
+    return entityManager
+        .createQuery("select distinct t.taskView from VariantDetail t" +
+            " where t.variantName = :name", String.class)
+        .setParameter("name", variantName)
+        .getResultList();
+  }
+  // @formatter:on
+
+  // @formatter:off
+  public List<VariantDetail> getTaskExclusionsForVariantAndTaskView
+    (String variantName, String taskView) {
+    return entityManager
+        .createQuery("select t from VariantDetail t" +
+            " where t.variantName = :name and t.taskView = :view", VariantDetail.class)
+        .setParameter("name", variantName)
+        .setParameter("view", taskView)
         .getResultList();
   }
   // @formatter:on
