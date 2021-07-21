@@ -1,5 +1,7 @@
 package com.fossfloors.e1tasks.backend.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -8,40 +10,39 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 @MappedSuperclass
 public abstract class AbstractEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  private Long   id;
+  private Long          id;
 
   @Transient
-  private Long   salt;
+  private Long          salt;
 
-  @NotNull
-  private long   dateCreated;
+  @CreationTimestamp
+  private LocalDateTime dateCreated;
 
-  @NotNull
-  private long   dateModified;
-
-  @NotNull
-  @NotEmpty
-  private String createdBy;
+  @UpdateTimestamp
+  private LocalDateTime dateModified;
 
   @NotNull
   @NotEmpty
-  private String modifiedBy;
+  private String        createdBy;
+
+  @NotNull
+  @NotEmpty
+  private String        modifiedBy;
 
   protected AbstractEntity() {
     // TODO find way to get logged in user
     createdBy = "user";
     modifiedBy = "user";
 
-    long now = System.currentTimeMillis();
-    dateCreated = now;
-    dateModified = now;
-
-    salt = now;
+    salt = System.currentTimeMillis();
   }
 
   public Long getId() {
@@ -56,19 +57,19 @@ public abstract class AbstractEntity {
     this.salt = salt;
   }
 
-  public long getDateCreated() {
+  public LocalDateTime getDateCreated() {
     return dateCreated;
   }
 
-  public void setDateCreated(long dateCreated) {
+  public void setDateCreated(LocalDateTime dateCreated) {
     this.dateCreated = dateCreated;
   }
 
-  public long getDateModified() {
+  public LocalDateTime getDateModified() {
     return dateModified;
   }
 
-  public void setDateModified(long dateModified) {
+  public void setDateModified(LocalDateTime dateModified) {
     this.dateModified = dateModified;
   }
 
@@ -96,11 +97,7 @@ public abstract class AbstractEntity {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((createdBy == null) ? 0 : createdBy.hashCode());
-    result = prime * result + (int) (dateCreated ^ (dateCreated >>> 32));
-    result = prime * result + (int) (dateModified ^ (dateModified >>> 32));
     result = prime * result + ((id == null) ? 0 : id.hashCode());
-    result = prime * result + ((modifiedBy == null) ? 0 : modifiedBy.hashCode());
     result = prime * result + ((salt == null) ? 0 : salt.hashCode());
     return result;
   }
