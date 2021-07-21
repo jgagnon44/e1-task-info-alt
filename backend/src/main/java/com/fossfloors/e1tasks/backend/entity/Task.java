@@ -7,15 +7,16 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 
-//@Entity
+@Entity
 public class Task extends TaskMaster {
 
+  private String    taskView;
   private String    variantName;
 
-  // @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = CascadeType.ALL)
   private Set<Task> toReferences   = new LinkedHashSet<>();
 
-  // @ManyToMany(mappedBy = "toReferences")
+  @ManyToMany(mappedBy = "toReferences")
   private Set<Task> fromReferences = new LinkedHashSet<>();
 
   /**
@@ -44,6 +45,14 @@ public class Task extends TaskMaster {
     this.childTaskLink = master.childTaskLink;
   }
 
+  public String getTaskView() {
+    return taskView;
+  }
+
+  public void setTaskView(String taskView) {
+    this.taskView = taskView;
+  }
+
   public String getVariantName() {
     return variantName;
   }
@@ -68,24 +77,25 @@ public class Task extends TaskMaster {
 
   @Override
   public String toString() {
-    return "Task [variantName=" + variantName + ", toReferences=" + toReferences.size()
-        + ", fromReferences=" + fromReferences.size() + ", internalTaskID=" + internalTaskID
-        + ", taskID=" + taskID + ", name=" + name + ", type=" + type + ", objectName=" + objectName
-        + ", version=" + version + ", formName=" + formName + ", active=" + active + ", required="
-        + required + ", taskViewLink=" + taskViewLink + ", parentTaskLink=" + parentTaskLink
-        + ", childTaskLink=" + childTaskLink + "]";
+    return "Task [taskView=" + taskView + ", variantName=" + variantName + ", toReferences="
+        + toReferences.size() + ", fromReferences=" + fromReferences.size() + ", internalTaskID="
+        + internalTaskID + ", taskID=" + taskID + ", name=" + name + ", type=" + type
+        + ", objectName=" + objectName + ", version=" + version + ", formName=" + formName
+        + ", active=" + active + ", required=" + required + ", taskViewLink=" + taskViewLink
+        + ", parentTaskLink=" + parentTaskLink + ", childTaskLink=" + childTaskLink + "]";
   }
 
   public String dumpNode() {
-    return "Task [variantName=" + variantName + ", toReferences=" + toReferences.size()
-        + ", fromReferences=" + fromReferences.size() + ", internalTaskID=" + internalTaskID
-        + ", name=" + name + ", type=" + type + "]";
+    return "Task [taskView=" + taskView + ", variantName=" + variantName + ", toReferences="
+        + toReferences.size() + ", fromReferences=" + fromReferences.size() + ", internalTaskID="
+        + internalTaskID + ", name=" + name + ", type=" + type + "]";
   }
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = super.hashCode();
+    result = prime * result + ((taskView == null) ? 0 : taskView.hashCode());
     result = prime * result + ((variantName == null) ? 0 : variantName.hashCode());
     return result;
   }
@@ -99,6 +109,11 @@ public class Task extends TaskMaster {
     if (getClass() != obj.getClass())
       return false;
     Task other = (Task) obj;
+    if (taskView == null) {
+      if (other.taskView != null)
+        return false;
+    } else if (!taskView.equals(other.taskView))
+      return false;
     if (variantName == null) {
       if (other.variantName != null)
         return false;
