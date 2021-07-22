@@ -7,4 +7,9 @@ import com.fossfloors.e1tasks.backend.entity.TaskRelationship;
 
 @Repository
 public interface TaskRelationshipRepository extends JpaRepository<TaskRelationship, Long> {
+
+  TaskRelationship findByParentTaskID(String id);
+
+  TaskRelationship findByChildTaskID(String id);
+
 }
