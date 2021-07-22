@@ -34,7 +34,8 @@ public class MasterMenuService {
 
   @PostConstruct
   private void init() {
-    // TODO masterMenuMap
+    List<String> taskViews = trService.getDistinctTaskViewIDs();
+    masterMenuMap = taskService.getMasterMenuMap(taskViews);
   }
 
   public List<String> getMasterMenuTaskViewIDs() {
