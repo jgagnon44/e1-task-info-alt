@@ -8,4 +8,6 @@ public interface TaskRepositoryCustom {
 
   List<Task> findAll();
 
+  List<Task> findAllForTaskView(String taskView);
+
 }

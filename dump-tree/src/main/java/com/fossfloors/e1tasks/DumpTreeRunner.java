@@ -21,13 +21,14 @@ public class DumpTreeRunner implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
-    TaskMaster foss = tmService.findByInternalTaskID("1014");
+    TaskMaster foss = tmService.findByVariantAndInternalTaskID("FFMFGLO", "1014");
     processNode(foss);
   }
 
   private void processNode(TaskMaster node) {
     level++;
-    logger.info(buildSpacer() + node.dumpNode());
+    // logger.info(buildSpacer() + node.dumpNode());
+    System.out.println(buildSpacer() + node.dumpNode());
 
     node.getToReferences().forEach(c -> {
       TaskMaster child = tmService.findByInternalTaskID(c.getInternalTaskID());

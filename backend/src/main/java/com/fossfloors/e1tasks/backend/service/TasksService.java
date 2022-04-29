@@ -2,6 +2,7 @@ package com.fossfloors.e1tasks.backend.service;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -20,8 +21,9 @@ import com.fossfloors.e1tasks.backend.entity.Task;
 import com.fossfloors.e1tasks.backend.util.TaskMenuPrintUtil;
 import com.fossfloors.e1tasks.backend.util.TaskRelationshipsProcessor;
 
-@Service
-@Transactional
+@Deprecated
+// @Service
+// @Transactional
 public class TasksService {
 
   private static final Logger                 logger = LoggerFactory.getLogger(TasksService.class);
@@ -48,25 +50,44 @@ public class TasksService {
     relationsProcessor = new TaskRelationshipsProcessor(taskMasterService.findAll(),
         relationService, variantService);
 
+    // Map<String, Task> masterMenus = relationsProcessor.buildMasterMenus();
+    // TaskMenuPrintUtil.printMasterMenuMap(masterMenus);
+
+    // Task task91 = relationsProcessor.buildMasterMenu("91");
+    // TaskMenuPrintUtil.printMasterMenu("91", task91);
+    //
     Task fossTask = relationsProcessor.buildMasterMenu("1014");
     TaskMenuPrintUtil.printMasterMenu("1014", fossTask);
+    //
+    // fossVariantsMap = relationsProcessor.buildVariantMenusForView("1014");
+    //
+    // Task ffmfgloTask = relationsProcessor.buildVariantMenu("FFMFGLO", "1014");
+    // TaskMenuPrintUtil.printVariantMenu(new VariantID("FFMFGLO", "1014"), ffmfgloTask);
+    //
+    // Task ffmathanTask = relationsProcessor.buildVariantMenu("FFMATHAN", "1014");
+    // TaskMenuPrintUtil.printVariantMenu(new VariantID("FFMATHAN", "1014"), ffmathanTask);
+    //
+    // Task ffconvmgrTask = relationsProcessor.buildVariantMenu("FFCONVMGR", "1014");
+    // TaskMenuPrintUtil.printVariantMenu(new VariantID("FFCONVMGR", "1014"), ffconvmgrTask);
+  }
 
-    Task ffmfgloTask = relationsProcessor.buildVariantMenu("FFMFGLO", "1014");
-    TaskMenuPrintUtil.printVariantMenu(new VariantID("FFMFGLO", "1014"), ffmfgloTask);
-    
-    Task ffmathanTask = relationsProcessor.buildVariantMenu("FFMATHAN", "1014");
-    TaskMenuPrintUtil.printVariantMenu(new VariantID("FFMATHAN", "1014"), ffmathanTask);
-    
-    Task ffconvmgrTask = relationsProcessor.buildVariantMenu("FFCONVMGR", "1014");
-    TaskMenuPrintUtil.printVariantMenu(new VariantID("FFCONVMGR", "1014"), ffconvmgrTask);
+  // @formatter:on
+
+  public List<String> getMasterMenuTaskViews() {
+    return relationService.getDistinctTaskViewIDs();
   }
 
   // @formatter:off
   public Set<Task> getTopLevelTasks(String taskView) {
     LinkedHashSet<Task> variantSet = masterMenuMap.get(taskView);
-    return variantSet.stream()
-        .filter(t -> t.getFromReferences().isEmpty())
-        .collect(Collectors.toSet());
+    
+    if (variantSet != null) {
+      return variantSet.stream()
+          .filter(t -> t.getFromReferences().isEmpty())
+          .collect(Collectors.toSet());
+    } else {
+      return null;
+    }
   }
   // @formatter:on
 

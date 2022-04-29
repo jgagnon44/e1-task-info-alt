@@ -7,7 +7,7 @@ import com.fossfloors.e1tasks.backend.entity.TaskMaster;
 
 public interface TaskMasterRepositoryCustom {
 
-  TaskMaster findByInternalTaskID(String id);
+  TaskMaster findByInternalTaskID(String variantName, String id);
 
   List<TaskMaster> findAll();
 

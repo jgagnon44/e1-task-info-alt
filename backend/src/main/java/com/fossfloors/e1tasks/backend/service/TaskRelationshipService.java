@@ -32,15 +32,29 @@ public class TaskRelationshipService {
   public TaskRelationshipService(TaskRelationshipRepository repo) {
     this.repo = repo;
   }
-  
-  public List<TaskRelationship> findAll() {
-    return repo.findAll();
+
+  public Set<TaskRelationship> findAll() {
+    return Set.copyOf(repo.findAll());
   }
 
   public void saveAll(Set<TaskRelationship> taskRelationshipSet) {
     repo.saveAll(taskRelationshipSet);
   }
 
+  // @formatter:off
+  public List<TaskRelationship> getRelationsForTaskView(String taskView) {
+    return entityManager
+        .createQuery("select t from TaskRelationship t where t.taskView = :view", TaskRelationship.class)
+        .setParameter("view", taskView)
+        .getResultList();
+  }
+  // @formatter:on
+
+  //
+  // get task relations by task view
+  //
+
+  @Deprecated
   // @formatter:off
   public List<String> getParentTaskIDs() {
     return entityManager
@@ -58,6 +72,16 @@ public class TaskRelationshipService {
   // @formatter:on
 
   // @formatter:off
+  public List<String> getDistinctParentTaskIDs(String taskView) {
+    return entityManager
+        .createQuery("select distinct t.parentTaskID from TaskRelationship t where t.taskView = :view", String.class)
+        .setParameter("view", taskView)
+        .getResultList();
+  }
+  // @formatter:on
+
+  @Deprecated
+  // @formatter:off
   public List<String> getChildTaskIDs() {
     return entityManager
         .createQuery("select t.childTaskID from TaskRelationship t", String.class)
@@ -74,6 +98,15 @@ public class TaskRelationshipService {
   // @formatter:on
 
   // @formatter:off
+  public List<String> getDistinctChildTaskIDs(String taskView) {
+    return entityManager
+        .createQuery("select distinct t.childTaskID from TaskRelationship t where t.taskView = :view", String.class)
+        .setParameter("view", taskView)
+        .getResultList();
+  }
+  // @formatter:on
+
+  // @formatter:off
   public List<String> getTopLevelParentTaskIDs() {
     List<String> distinctParentIDs = getDistinctParentTaskIDs();
     List<String> distinctChildIDs = getDistinctChildTaskIDs();
@@ -84,11 +117,29 @@ public class TaskRelationshipService {
   // @formatter:on
 
   // @formatter:off
+  public List<String> getTopLevelTaskIDsByTaskView(String taskView) {
+    List<String> distinctParentIDs = getDistinctParentTaskIDs(taskView);
+    List<String> distinctChildIDs = getDistinctChildTaskIDs(taskView);
+    return distinctParentIDs.stream()
+        .filter(t -> !distinctChildIDs.contains(t))
+        .collect(Collectors.toList());
+  }
+  // @formatter:on
+
+  // @formatter:off
   public List<TaskRelationship> getChildRelationsForParent(String parentID) {
     return entityManager
         .createQuery("select t from TaskRelationship t where t.parentTaskID = :parentID" +
             " order by t.presentationSeq asc", TaskRelationship.class)
         .setParameter("parentID", parentID)
+        .getResultList();
+  }
+  // @formatter:on
+
+  // @formatter:off
+  public List<String> getDistinctTaskViewIDs() {
+    return entityManager
+        .createQuery("select distinct t.taskView from TaskRelationship t", String.class)
         .getResultList();
   }
   // @formatter:on

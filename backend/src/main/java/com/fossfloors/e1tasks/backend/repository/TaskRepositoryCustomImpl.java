@@ -27,9 +27,23 @@ public class TaskRepositoryCustomImpl implements TaskRepositoryCustom {
   public List<Task> findAll() {
     return entityManager
         .createQuery("select distinct t from Task t " +
-            "left join fetch t.referencesTo " +
-            "left join fetch t.referencesFrom", Task.class)
+            "left join fetch t.toReferences " +
+            "left join fetch t.fromReferences", Task.class)
         .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+        .getResultList();
+  }
+  // @formatter:on
+
+  @Override
+  // @formatter:off
+  public List<Task> findAllForTaskView(String taskView) {
+    return entityManager
+        .createQuery("select distinct t from Task t " +
+            "left join fetch t.toReferences " +
+            "left join fetch t.fromReferences " +
+            "where t.taskView = :taskView", Task.class)
+        .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+        .setParameter("taskView", taskView)
         .getResultList();
   }
   // @formatter:on

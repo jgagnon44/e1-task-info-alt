@@ -12,4 +12,6 @@ public interface TaskRepository extends JpaRepository<Task, Long>, TaskRepositor
 
   List<Task> findAll();
 
+  List<Task> findAllForTaskView(String taskView);
+
 }

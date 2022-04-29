@@ -11,7 +11,7 @@ import com.fossfloors.e1tasks.backend.entity.TaskMaster;
 public interface TaskMasterRepository
     extends JpaRepository<TaskMaster, Long>, TaskMasterRepositoryCustom {
 
-  TaskMaster findByInternalTaskID(String id);
+  TaskMaster findByInternalTaskID(String variantName, String id);
 
   List<TaskMaster> findAll();
 

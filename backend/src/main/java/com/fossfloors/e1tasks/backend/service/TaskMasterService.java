@@ -1,6 +1,5 @@
 package com.fossfloors.e1tasks.backend.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -13,32 +12,28 @@ import org.springframework.stereotype.Service;
 
 import com.fossfloors.e1tasks.backend.beans.TaskFilter;
 import com.fossfloors.e1tasks.backend.entity.TaskMaster;
-import com.fossfloors.e1tasks.backend.entity.TaskRelationship;
 import com.fossfloors.e1tasks.backend.repository.TaskMasterRepository;
 
 @Service
 @Transactional
 public class TaskMasterService {
 
-  private static final Logger           logger = LoggerFactory.getLogger(TaskMasterService.class);
+  private static final Logger        logger = LoggerFactory.getLogger(TaskMasterService.class);
 
-  private final TaskMasterRepository    taskMasterRepo;
-
-  private final TaskRelationshipService taskRelationService;
+  private final TaskMasterRepository taskMasterRepo;
 
   @Autowired
-  public TaskMasterService(TaskMasterRepository taskMasterRepo,
-      TaskRelationshipService taskRelationService) {
+  public TaskMasterService(TaskMasterRepository taskMasterRepo) {
     this.taskMasterRepo = taskMasterRepo;
-    this.taskRelationService = taskRelationService;
   }
 
-  public List<TaskMaster> findAll() {
-    return taskMasterRepo.findAll();
+  public Set<TaskMaster> findAll() {
+    return Set.copyOf(taskMasterRepo.findAll());
   }
 
-  public TaskMaster findByInternalTaskID(String id) {
-    return taskMasterRepo.findByInternalTaskID(id);
+  @Deprecated
+  public TaskMaster findByVariantAndInternalTaskID(String variantName, String id) {
+    return taskMasterRepo.findByInternalTaskID(variantName, id);
   }
 
   public List<TaskMaster> filter(TaskFilter filter) {
@@ -47,48 +42,6 @@ public class TaskMasterService {
 
   public void saveAll(Set<TaskMaster> taskMasterSet) {
     taskMasterRepo.saveAll(taskMasterSet);
-  }
-
-  public List<TaskMaster> getTopLevelTasks() {
-    List<TaskMaster> result = new ArrayList<>();
-    List<String> topLevelIDs = taskRelationService.getTopLevelParentTaskIDs();
-
-    topLevelIDs.forEach(id -> {
-      TaskMaster task = taskMasterRepo.findByInternalTaskID(id);
-
-      if (task != null) {
-        result.add(task);
-      }
-    });
-
-    return result;
-  }
-
-  public int getChildCount(TaskMaster parent) {
-    return parent != null
-        ? taskRelationService.getChildRelationsForParent(parent.getInternalTaskID()).size()
-        : 0;
-  }
-
-  public boolean hasChildren(TaskMaster parent) {
-    return parent != null
-        ? !taskRelationService.getChildRelationsForParent(parent.getInternalTaskID()).isEmpty()
-        : false;
-  }
-
-  public List<TaskMaster> getChildren(TaskMaster parent) {
-    List<TaskMaster> result = new ArrayList<>();
-
-    if (parent != null) {
-      List<TaskRelationship> childRelations = taskRelationService
-          .getChildRelationsForParent(parent.getInternalTaskID());
-
-      childRelations.forEach(relation -> {
-        result.add(taskMasterRepo.findByInternalTaskID(relation.getChildTaskID()));
-      });
-    }
-
-    return result;
   }
 
 }
